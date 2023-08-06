@@ -13,7 +13,7 @@ export const register = async (req, res) => {
           .json({ message: `${req.body.username} already exists` });
       } else {
         passport.authenticate("local")(req, res, function () {
-          res.status(201).json({ user: user.username });
+          res.status(201).json({ user: { username: user.username } });
         });
       }
     }
@@ -31,15 +31,19 @@ export const login = (req, res) => {
       console.log(err);
     } else {
       passport.authenticate("local")(req, res, function () {
-        res.status(200).json({ user: user.username });
+        res.status(200).json({ user: { username: user.username } });
       });
     }
   });
 };
 
 export const logout = (req, res) => {
-  req.logout();
-  res.sendStatus(200);
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.status(200).send();
+  });
 };
 
 export const googleLogin = (req, res) => {

@@ -5,11 +5,15 @@ import { config } from "../config/index.js";
 import { validate } from "./validator.js";
 
 export const validateCredential = [
-  body("username").trim().notEmpty().withMessage("username should be empty"),
+  body("username")
+    .trim()
+    .isEmail()
+    .notEmpty()
+    .withMessage("Email should be empty"),
   body("password")
     .trim()
-    .isLength({ min: 5 })
-    .withMessage("password should be at least 5 characters"),
+    .isLength({ min: 8 })
+    .withMessage("Password should be at least 8 characters"),
   validate,
 ];
 
