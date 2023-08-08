@@ -18,8 +18,7 @@ export const config = {
     secret: required("SESSION_SECRET"),
   },
   db: {
-    host: required("DB_HOST"),
-    port: parseInt(required("DB_PORT", 27017)),
+    url: required("DB_URL"),
     name: required("DB_NAME"),
   },
   google: {
