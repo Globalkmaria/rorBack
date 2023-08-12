@@ -6,7 +6,6 @@ import cors from "cors";
 
 import { config, corsOption, sessionOptions } from "./config/index.js";
 import v1 from "./router/v1/index.js";
-import { connectDb } from "./db/database.js";
 import { errorHandler, notFound } from "./middleware/errorHandlers.js";
 
 import "./config/passport.js";
@@ -21,8 +20,6 @@ app.use(session(sessionOptions));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-connectDb();
 
 app.use("/api/v1", v1);
 

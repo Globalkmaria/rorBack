@@ -18,8 +18,8 @@ export const config = {
     secret: required("SESSION_SECRET"),
   },
   db: {
-    url: required("DB_URL"),
-    name: required("DB_NAME"),
+    constDB: required("CONST_DB_URL"),
+    userDB: required("USER_DB_URL"),
   },
   google: {
     clientId: required("GOOGLE_CLIENT_ID"),
