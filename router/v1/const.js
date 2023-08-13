@@ -4,7 +4,7 @@ import { constConnection } from "../../db/database.js";
 
 const router = express.Router();
 
-const stockSchema = new mongoose.Schema({
+const topStockSchema = new mongoose.Schema({
   rank: Number,
   name: String,
   symbol: String,
@@ -26,7 +26,7 @@ const stockSchema = new mongoose.Schema({
   invest_url: String,
 });
 
-const Stock = constConnection.model("Stock", stockSchema);
+const Stock = constConnection.model("Stock", topStockSchema);
 
 router.get("/top-stocks", async (req, res) => {
   const stocks = await Stock.aggregate([
