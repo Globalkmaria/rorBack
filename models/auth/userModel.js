@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import passportLocalMongoose from "passport-local-mongoose";
 import findOrCreate from "mongoose-findorcreate";
-import { userConnection } from "../db/database.js";
+import { userConnection } from "../../db/database.js";
 
 const userSchema = new mongoose.Schema({
   email: String,

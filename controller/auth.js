@@ -1,4 +1,4 @@
-import User from "../models/userModel.js";
+import User from "../models/auth/userModel.js";
 import passport from "passport";
 
 export const register = async (req, res) => {
