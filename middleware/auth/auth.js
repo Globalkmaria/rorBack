@@ -1,8 +1,8 @@
 import { body } from "express-validator";
 import passport from "passport";
 
-import { config } from "../config/index.js";
-import { validate } from "./validator.js";
+import { config } from "../../config/index.js";
+import { validate } from "../validator.js";
 
 export const validateCredential = [
   body("username")
@@ -25,3 +25,10 @@ export const responseGoogleOAuth = passport.authenticate("google", {
   successRedirect: `${config.frontend.url}/`,
   failureRedirect: `${config.frontend.url}/login`,
 });
+
+export const isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.sendStatus(401);
+};
