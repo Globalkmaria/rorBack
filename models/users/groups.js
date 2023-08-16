@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { userConnection } from "../../db/database.js";
 
 const Schema = mongoose.Schema;
+
 const GroupSchema = new Schema({
   id: {
     type: String,
