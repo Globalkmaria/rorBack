@@ -1,3 +1,4 @@
+import userStocks from "../../models/users/stocks.js";
 import { removeProperties } from "../../utils/removeProperties.js";
 
 const NOT_USED_USER_STOCKS_PROPERTY = [
@@ -51,4 +52,43 @@ export const getNewGroupsData = (new_groups, original_groups) => {
     next_group_id++;
   }
   return { newGroups, next_group_id };
+};
+
+export const getNewItem = (next_item_id) => {
+  return {
+    id: next_item_id,
+    buy_date: new Date(),
+    buy_time: "00:00",
+    quantity: 0,
+    buy_price: 0,
+    created_at: new Date(),
+  };
+};
+
+export const getNewStock = (next_stock_id, next_item_id) => {
+  return {
+    info: {
+      id: next_stock_id,
+      name: "",
+      current_price: 0,
+      created_at: new Date(),
+    },
+    items: {
+      [next_item_id]: getNewItem(next_item_id),
+    },
+  };
+};
+
+export const getStocks = async (user_id) => {
+  let stocks = await userStocks.findOne({ user_id });
+
+  if (!stocks) {
+    stocks = await userStocks.create({
+      user_id,
+      next_stock_id: 0,
+      next_item_id: 0,
+      stocks: new Map(),
+    });
+  }
+  return stocks;
 };

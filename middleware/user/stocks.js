@@ -1,21 +1,12 @@
 import userStocks from "../../models/users/stocks.js";
 import { keysToCamelCase } from "../../utils/toCamelCase.js";
-import { filterUserStocksProps, getNewStocksData } from "./utils.js";
+import {
+  filterUserStocksProps,
+  getNewStock,
+  getNewStocksData,
+  getStocks,
+} from "./utils.js";
 import { keysToSnakeCase } from "../../utils/toSnakeCase.js";
-
-const getStocks = async (user_id) => {
-  let stocks = await userStocks.findOne({ user_id });
-
-  if (!stocks) {
-    stocks = await userStocks.create({
-      user_id,
-      next_stock_id: 0,
-      next_item_id: 0,
-      stocks: new Map(),
-    });
-  }
-  return stocks;
-};
 
 export const getUserStocks = async (req, res, next) => {
   const user_id = req.user;
@@ -41,6 +32,34 @@ export const saveUserStocks = async (req, res, next) => {
     { $set: { ...newStocks, next_stock_id, next_item_id } },
     { new: true, upsert: false }
   );
+
+  next();
+};
+
+export const addNewStock = async (req, res, next) => {
+  const user_id = req.user;
+  const original_stocks = await getStocks(user_id);
+  const newStock = getNewStock(
+    original_stocks.next_stock_id,
+    original_stocks.next_item_id
+  );
+
+  await userStocks.findOneAndUpdate(
+    { user_id },
+    {
+      $set: {
+        [`stocks.${original_stocks.next_stock_id}`]: newStock,
+        next_stock_id: original_stocks.next_stock_id + 1,
+        next_item_id: original_stocks.next_item_id + 1,
+      },
+    },
+    { new: true, upsert: false }
+  );
+
+  req.stocks = {
+    stock_id: original_stocks.next_stock_id,
+    item_id: original_stocks.next_item_id,
+  };
 
   next();
 };
