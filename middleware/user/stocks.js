@@ -2,6 +2,7 @@ import userStocks from "../../models/users/stocks.js";
 import { keysToCamelCase } from "../../utils/toCamelCase.js";
 import {
   filterUserStocksProps,
+  getNewItem,
   getNewStock,
   getNewStocksData,
   getStocks,
@@ -53,12 +54,37 @@ export const addNewStock = async (req, res, next) => {
         next_item_id: original_stocks.next_item_id + 1,
       },
     },
-    { new: true, upsert: false }
+    { upsert: false }
   );
 
   req.stocks = {
     stock_id: original_stocks.next_stock_id,
     item_id: original_stocks.next_item_id,
+  };
+
+  next();
+};
+
+export const addNewItem = async (req, res, next) => {
+  const user_id = req.user;
+  const stock_id = req.params.stockId;
+  const { next_item_id } = await getStocks(user_id);
+  const newStock = getNewItem(next_item_id);
+
+  await userStocks.findOneAndUpdate(
+    { user_id },
+    {
+      $set: {
+        [`stocks.${stock_id}.items.${next_item_id}`]: newStock,
+        next_item_id: next_item_id + 1,
+      },
+    },
+    { upsert: false }
+  );
+
+  req.stocks = {
+    stock_id,
+    item_id: next_item_id,
   };
 
   next();

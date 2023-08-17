@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  addNewItem,
   addNewStock,
   getUserStocks,
   saveUserStocks,
@@ -23,6 +24,10 @@ router.post("/", addNewStock, (req, res) => {
 });
 
 router.delete("/:stockId", deleteUserStock);
+
+router.post("/:stockId/items", addNewItem, (req, res) => {
+  res.status(201).json(keysToCamelCase(req.stocks));
+});
 
 router.delete("/:stockId/items/:itemId", deleteUserItem);
 
