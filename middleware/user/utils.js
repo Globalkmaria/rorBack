@@ -1,26 +1,26 @@
+import userGroups from "../../models/users/groups.js";
 import userStocks from "../../models/users/stocks.js";
 import { removeProperties } from "../../utils/removeProperties.js";
 
-const NOT_USED_USER_STOCKS_PROPERTY = [
-  "__v",
-  "next_stock_id",
-  "next_item_id",
-  "user_id",
-];
+const NOT_USED_USER_STOCKS_PROPERTY = ["__v", "user_id"];
 
 export const filterUserStocksProps = (userStocks) => {
   return removeProperties(userStocks, NOT_USED_USER_STOCKS_PROPERTY);
 };
 
-const NOT_USED_USER_GROUPS_PROPERTY = ["__v", "next_group_id", "user_id"];
+const NOT_USED_USER_GROUPS_PROPERTY = ["__v", "user_id"];
 
 export const filterUserGroupsProps = (userStocks) => {
   return removeProperties(userStocks, NOT_USED_USER_GROUPS_PROPERTY);
 };
 
-export const getNewStocksData = (new_stocks, original_stocks) => {
-  let next_stock_id = original_stocks.next_stock_id;
-  let next_item_id = original_stocks.next_item_id;
+export const getNewStocksData = (
+  new_stocks,
+  original_next_stock_id,
+  original_next_item_id
+) => {
+  let next_stock_id = original_next_stock_id;
+  let next_item_id = original_next_item_id;
 
   const newStocks = {};
 
@@ -41,8 +41,8 @@ export const getNewStocksData = (new_stocks, original_stocks) => {
   return { newStocks, next_stock_id, next_item_id };
 };
 
-export const getNewGroupsData = (new_groups, original_groups) => {
-  let next_group_id = original_groups.next_group_id;
+export const getNewGroupsData = (new_groups, original_next_group_id) => {
+  let next_group_id = original_next_group_id;
   const newGroups = {};
 
   for (const groupId in new_groups) {
@@ -85,10 +85,24 @@ export const getStocks = async (user_id) => {
   if (!stocks) {
     stocks = await userStocks.create({
       user_id,
-      next_stock_id: 0,
-      next_item_id: 0,
+      next_stock_id: 1,
+      next_item_id: 1,
       stocks: new Map(),
     });
   }
   return stocks;
+};
+
+export const getGroups = async (user_id) => {
+  let groups = await userGroups.findOne({ user_id });
+
+  if (!groups) {
+    groups = await userGroups.create({
+      user_id,
+      next_group_id: 2,
+      groups: new Map(),
+    });
+  }
+
+  return groups;
 };
