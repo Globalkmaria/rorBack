@@ -42,7 +42,6 @@ const StockSchema = new Schema(
       },
       name: {
         type: String,
-        required: true,
       },
       current_price: {
         type: Number,

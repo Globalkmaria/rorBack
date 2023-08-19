@@ -25,7 +25,8 @@ export const saveUserStocks = async (req, res, next) => {
   const original_stocks = await getStocks(user_id);
   const { newStocks, next_stock_id, next_item_id } = getNewStocksData(
     new_stocks,
-    original_stocks
+    original_stocks.next_stock_id,
+    original_stocks.next_item_id
   );
 
   await userStocks.findOneAndUpdate(
@@ -35,6 +36,35 @@ export const saveUserStocks = async (req, res, next) => {
   );
 
   next();
+};
+
+export const replaceUserStocks = async (req, res, next) => {
+  try {
+    const { stocks, next_stock_id, next_item_id } = keysToSnakeCase(
+      req.body.stocks
+    );
+    if (!stocks) next();
+
+    const user_id = req.user;
+    const original_stocks = await getStocks(user_id);
+
+    original_stocks.stocks.clear();
+
+    for (const stockId in stocks) {
+      original_stocks.set(`stocks.${stockId}`, stocks[stockId]);
+    }
+    original_stocks.set("next_stock_id", next_stock_id);
+    original_stocks.set("next_item_id", next_item_id);
+
+    await original_stocks.validate();
+
+    req.stocks = original_stocks;
+
+    return next();
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ message: err.message });
+  }
 };
 
 export const addNewStock = async (req, res, next) => {
