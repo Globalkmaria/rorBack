@@ -23,12 +23,18 @@ export const editUserStock = async (req, res, next) => {
     );
 
     if (!stock) {
-      return res.status(404).send();
+      return res.status(404).send({
+        message: "There was no matching stock found for the given user.",
+      });
     }
 
     return res.status(200).send();
   } catch (err) {
-    if (err.name === "CastError") return res.status(400).send(err);
+    if (err.name === "CastError")
+      return res.status(400).send({
+        message: "There was an error with casting.",
+        error: err,
+      });
     next(err);
   }
 };
@@ -95,11 +101,19 @@ export const editUserItem = async (req, res, next) => {
       { new: true }
     );
 
-    if (!stock) return res.status(404).send();
+    if (!stock) {
+      return res.status(404).send({
+        message: "There was no matching item found for the given user.",
+      });
+    }
 
     return res.status(200).send();
   } catch (err) {
-    if (err.name === "CastError") return res.status(400).json(err);
+    if (err.name === "CastError")
+      return res.status(400).json({
+        message: "There was an error with casting.",
+        error: err,
+      });
     next(err);
   }
 };
