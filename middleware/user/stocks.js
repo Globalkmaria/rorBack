@@ -8,6 +8,7 @@ import {
   getStocks,
 } from "./utils.js";
 import { keysToSnakeCase } from "../../utils/keysToSnakeCase.js";
+import { SAMPLE_STOCKS_DATA } from "../../data/stocks.js";
 
 export const getUserStocks = async (req, res, next) => {
   try {
@@ -122,4 +123,20 @@ export const addNewItem = async (req, res, next) => {
   };
 
   next();
+};
+
+export const addUserStockSample = async (req, res, next) => {
+  try {
+    const user_id = req.user;
+    const original_stocks = await getStocks(user_id);
+
+    original_stocks.set("stocks", SAMPLE_STOCKS_DATA.stocks);
+    original_stocks.set("next_stock_id", SAMPLE_STOCKS_DATA.next_stock_id);
+    original_stocks.set("next_item_id", SAMPLE_STOCKS_DATA.next_item_id);
+
+    await original_stocks.save();
+    next();
+  } catch (error) {
+    next(error);
+  }
 };

@@ -1,11 +1,13 @@
 import express from "express";
 
 import {
+  addUserGroupSample,
   getUserGroups,
   replaceUserGroups,
   saveUserGroups,
 } from "../../../middleware/user/groups.js";
 import {
+  addUserStockSample,
   getUserStocks,
   replaceUserStocks,
   saveUserStocks,
@@ -30,6 +32,10 @@ router.put("/", replaceUserStocks, replaceUserGroups, async (req, res) => {
     console.log(err);
     return res.status(400).json({ message: err.message });
   }
+});
+
+router.post("/sample", addUserStockSample, addUserGroupSample, (req, res) => {
+  return res.status(200).send();
 });
 
 export default router;
