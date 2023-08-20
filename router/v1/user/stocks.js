@@ -8,8 +8,10 @@ import {
 import {
   deleteUserItem,
   deleteUserStock,
+  editUserItem,
+  editUserStock,
 } from "../../../controller/user/stocks.js";
-import { keysToCamelCase } from "../../../utils/toCamelCase.js";
+import { keysToCamelCase } from "../../../utils/keysToCamelCase.js";
 
 const router = express.Router();
 
@@ -23,11 +25,15 @@ router.post("/", addNewStock, (req, res) => {
   res.status(201).json(keysToCamelCase(req.stocks));
 });
 
+router.patch("/:stockId", editUserStock);
+
 router.delete("/:stockId", deleteUserStock);
 
 router.post("/:stockId/items", addNewItem, (req, res) => {
   res.status(201).json(keysToCamelCase(req.stocks));
 });
+
+router.patch("/:stockId/items/:itemId", editUserItem);
 
 router.delete("/:stockId/items/:itemId", deleteUserItem);
 
