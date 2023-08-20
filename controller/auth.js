@@ -1,5 +1,25 @@
 import User from "../models/auth/userModel.js";
 import passport from "passport";
+import mongoose from "mongoose";
+
+export const me = async (req, res, next) => {
+  try {
+    if (req.user) {
+      const user = await User.findOne({
+        _id: new mongoose.Types.ObjectId(req.user),
+      });
+      return res.status(200).json({ user: { username: user.username } });
+    }
+
+    if (req.isAuthenticated()) {
+      return res.status(200).json({ user: { username: req.user.username } });
+    }
+
+    return res.status(404).send({ message: "User not found" });
+  } catch (err) {
+    next(err);
+  }
+};
 
 export const register = async (req, res) => {
   User.register(

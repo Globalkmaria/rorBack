@@ -11,6 +11,8 @@ router.post(
   authController.register
 );
 
+router.get("/me", authController.me);
+
 router.post("/login", authMiddleware.validateCredential, authController.login);
 
 router.get("/logout", authController.logout);
