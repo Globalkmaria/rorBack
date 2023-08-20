@@ -20,7 +20,7 @@ router.get("/", getUserStocks, getUserGroups, (req, res) => {
 });
 
 router.patch("/", saveUserStocks, saveUserGroups, async (req, res) => {
-  res.status(200).send();
+  res.status(200).send({ success: true });
 });
 
 router.put("/", replaceUserStocks, replaceUserGroups, async (req, res) => {

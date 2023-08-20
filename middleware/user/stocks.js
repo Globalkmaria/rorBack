@@ -28,12 +28,14 @@ export const saveUserStocks = async (req, res, next) => {
 
   const user_id = req.user;
   const original_stocks = await getStocks(user_id);
-  const { newStocks, next_stock_id, next_item_id } = getNewStocksData(
-    new_stocks,
-    original_stocks.next_stock_id,
-    original_stocks.next_item_id
-  );
+  const { newStocks, next_stock_id, next_item_id, oldAndNewIdMap } =
+    getNewStocksData(
+      new_stocks,
+      original_stocks.next_stock_id,
+      original_stocks.next_item_id
+    );
 
+  req.stockOldAndNewIdMap = oldAndNewIdMap;
   await userStocks.findOneAndUpdate(
     { user_id },
     { $set: { ...newStocks, next_stock_id, next_item_id } },

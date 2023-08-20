@@ -18,9 +18,12 @@ export const saveUserGroups = async (req, res, next) => {
 
   const user_id = req.user;
   const original_groups = await getGroups(user_id);
+  const stockOldAndNewIdMap = req.stockOldAndNewIdMap;
+
   const { newGroups, next_group_id } = getNewGroupsData(
     new_groups,
-    original_groups.next_group_id
+    original_groups.next_group_id,
+    stockOldAndNewIdMap
   );
 
   await userGroups.findOneAndUpdate(

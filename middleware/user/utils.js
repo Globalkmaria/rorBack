@@ -22,6 +22,11 @@ export const getNewStocksData = (
   let next_stock_id = original_next_stock_id;
   let next_item_id = original_next_item_id;
 
+  const oldAndNewIdMap = {
+    stocks: {},
+    items: {},
+  };
+
   const newStocks = {};
 
   for (const stockId in new_stocks) {
@@ -31,22 +36,34 @@ export const getNewStocksData = (
       stock.items[itemId].id = next_item_id;
       stock.items[next_item_id] = stock.items[itemId];
       delete stock.items[itemId];
-
+      oldAndNewIdMap.items[itemId] = next_item_id;
       next_item_id++;
     }
 
     stock.info.id = next_stock_id;
+    oldAndNewIdMap.stocks[stockId] = next_stock_id;
     newStocks[`stocks.${next_stock_id++}`] = stock;
   }
-  return { newStocks, next_stock_id, next_item_id };
+  return { newStocks, next_stock_id, next_item_id, oldAndNewIdMap };
 };
 
-export const getNewGroupsData = (new_groups, original_next_group_id) => {
+export const getNewGroupsData = (
+  new_groups,
+  original_next_group_id,
+  stockOldAndNewIdMap
+) => {
   let next_group_id = original_next_group_id;
   const newGroups = {};
-
   for (const groupId in new_groups) {
     new_groups[groupId].id = next_group_id;
+    const newStocks = {};
+    for (const stockId in new_groups[groupId].stocks) {
+      const newItems = new_groups[groupId].stocks[stockId].map(
+        (id) => stockOldAndNewIdMap.items[id]
+      );
+      newStocks[stockOldAndNewIdMap.stocks[stockId]] = newItems;
+    }
+    new_groups[groupId].stocks = newStocks;
     newGroups[`groups.${next_group_id}`] = new_groups[groupId];
 
     next_group_id++;
