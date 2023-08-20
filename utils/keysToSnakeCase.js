@@ -3,6 +3,8 @@ export function camelToSnake(str) {
 }
 
 export const keysToSnakeCase = (obj) => {
+  if (obj === null || obj === undefined) return obj;
+
   if (Array.isArray(obj)) {
     return obj.map((v) => keysToSnakeCase(v));
   } else if (obj !== null && obj.constructor === Object) {

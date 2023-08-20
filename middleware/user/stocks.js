@@ -1,5 +1,5 @@
 import userStocks from "../../models/users/stocks.js";
-import { keysToCamelCase } from "../../utils/toCamelCase.js";
+import { keysToCamelCase } from "../../utils/keysToCamelCase.js";
 import {
   filterUserStocksProps,
   getNewItem,
@@ -7,7 +7,7 @@ import {
   getNewStocksData,
   getStocks,
 } from "./utils.js";
-import { keysToSnakeCase } from "../../utils/toSnakeCase.js";
+import { keysToSnakeCase } from "../../utils/keysToSnakeCase.js";
 
 export const getUserStocks = async (req, res, next) => {
   const user_id = req.user;

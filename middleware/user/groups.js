@@ -1,6 +1,6 @@
 import userGroups from "../../models/users/groups.js";
-import { keysToCamelCase } from "../../utils/toCamelCase.js";
-import { keysToSnakeCase } from "../../utils/toSnakeCase.js";
+import { keysToCamelCase } from "../../utils/keysToCamelCase.js";
+import { keysToSnakeCase } from "../../utils/keysToSnakeCase.js";
 import { filterUserGroupsProps, getGroups, getNewGroupsData } from "./utils.js";
 
 export const getUserGroups = async (req, res, next) => {

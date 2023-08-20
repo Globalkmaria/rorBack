@@ -6,6 +6,8 @@ const toCamelCase = (str) => {
 };
 
 export const keysToCamelCase = (obj) => {
+  if (obj === null || obj === undefined) return obj;
+
   if (Array.isArray(obj)) {
     return obj.map((v) => keysToCamelCase(v));
   } else if (obj !== null && obj.constructor === Object) {
