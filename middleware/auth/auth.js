@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 import passport from "passport";
+import mongoose from "mongoose";
 
 import { config } from "../../config/index.js";
 import { validate } from "../validator.js";
@@ -27,7 +28,8 @@ export const responseGoogleOAuth = passport.authenticate("google", {
 });
 
 export const isLoggedIn = (req, res, next) => {
-  if (req.isAuthenticated()) {
+  if (req.user) {
+    req.user = new mongoose.Types.ObjectId(req.user);
     return next();
   }
   res.sendStatus(401);

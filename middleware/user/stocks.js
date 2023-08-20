@@ -10,11 +10,15 @@ import {
 import { keysToSnakeCase } from "../../utils/keysToSnakeCase.js";
 
 export const getUserStocks = async (req, res, next) => {
-  const user_id = req.user;
-  const stocks = await getStocks(user_id);
-  req.stocks = keysToCamelCase(filterUserStocksProps(stocks.toJSON()));
+  try {
+    const user_id = req.user;
+    const stocks = await getStocks(user_id);
+    req.stocks = keysToCamelCase(filterUserStocksProps(stocks.toJSON()));
 
-  next();
+    next();
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const saveUserStocks = async (req, res, next) => {

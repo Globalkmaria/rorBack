@@ -81,7 +81,6 @@ export const getNewStock = (next_stock_id, next_item_id) => {
 
 export const getStocks = async (user_id) => {
   let stocks = await userStocks.findOne({ user_id });
-
   if (!stocks) {
     stocks = await userStocks.create({
       user_id,

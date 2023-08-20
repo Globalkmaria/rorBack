@@ -63,7 +63,6 @@ const StockSchema = new Schema(
 
 export const userStocksSchema = new Schema(
   {
-    _id: mongoose.Types.ObjectId,
     user_id: {
       type: mongoose.Types.ObjectId,
       required: true,
