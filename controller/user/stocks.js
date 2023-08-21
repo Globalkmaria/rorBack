@@ -119,18 +119,22 @@ export const editUserItem = async (req, res, next) => {
 };
 
 export const deleteUserItem = async (req, res) => {
-  const user_id = req.user;
-  const stock_id = req.params.stockId;
-  const item_id = req.params.itemId;
+  try {
+    const user_id = req.user;
+    const stock_id = req.params.stockId;
+    const item_id = req.params.itemId;
 
-  if (stock_id === undefined || item_id === undefined) {
-    return res.status(400).send();
+    if (stock_id === undefined || item_id === undefined) {
+      return res.status(400).send();
+    }
+
+    await userStocks.findOneAndUpdate(
+      { user_id },
+      { $unset: { [`stocks.${stock_id}.items.${item_id}`]: "" } }
+    );
+
+    res.status(204).send();
+  } catch (err) {
+    next(err);
   }
-
-  await userStocks.findOneAndUpdate(
-    { user_id },
-    { $unset: { [`stocks.${stock_id}.items.${item_id}`]: "" } }
-  );
-
-  res.status(204).send();
 };

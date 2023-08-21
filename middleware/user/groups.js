@@ -5,34 +5,42 @@ import { keysToSnakeCase } from "../../utils/keysToSnakeCase.js";
 import { filterUserGroupsProps, getGroups, getNewGroupsData } from "./utils.js";
 
 export const getUserGroups = async (req, res, next) => {
-  const user_id = req.user;
-  const groups = await getGroups(user_id);
-  req.groups = keysToCamelCase(filterUserGroupsProps(groups.toJSON()));
+  try {
+    const user_id = req.user;
+    const groups = await getGroups(user_id);
+    req.groups = keysToCamelCase(filterUserGroupsProps(groups.toJSON()));
 
-  next();
+    next();
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const saveUserGroups = async (req, res, next) => {
-  const new_groups = keysToSnakeCase(req.body.groups);
-  if (!new_groups) next();
+  try {
+    const new_groups = keysToSnakeCase(req.body.groups);
+    if (!new_groups) next();
 
-  const user_id = req.user;
-  const original_groups = await getGroups(user_id);
-  const stockOldAndNewIdMap = req.stockOldAndNewIdMap;
+    const user_id = req.user;
+    const original_groups = await getGroups(user_id);
+    const stockOldAndNewIdMap = req.stockOldAndNewIdMap;
 
-  const { newGroups, next_group_id } = getNewGroupsData(
-    new_groups,
-    original_groups.next_group_id,
-    stockOldAndNewIdMap
-  );
+    const { newGroups, next_group_id } = getNewGroupsData(
+      new_groups,
+      original_groups.next_group_id,
+      stockOldAndNewIdMap
+    );
 
-  await userGroups.findOneAndUpdate(
-    { user_id },
-    { $set: { ...newGroups, next_group_id } },
-    { new: true, upsert: false }
-  );
+    await userGroups.findOneAndUpdate(
+      { user_id },
+      { $set: { ...newGroups, next_group_id } },
+      { new: true, upsert: false }
+    );
 
-  next();
+    next();
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const replaceUserGroups = async (req, res, next) => {

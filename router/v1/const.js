@@ -28,35 +28,39 @@ const topStockSchema = new mongoose.Schema({
 
 const Stock = constConnection.model("Stock", topStockSchema);
 
-router.get("/top-stocks", async (req, res) => {
-  const stocks = await Stock.aggregate([
-    {
-      $project: {
-        id: "$_id",
-        rank: 1,
-        name: 1,
-        symbol: 1,
-        description: 1,
-        industry: 1,
-        sector: 1,
-        financial: {
-          marketCap: "$financial.market_cap",
-          revenue: 1,
-          grossProfit: "$financial.gross_profit",
-          operatingIncome: "$financial.operating_income",
+router.get("/top-stocks", async (req, res, next) => {
+  try {
+    const stocks = await Stock.aggregate([
+      {
+        $project: {
+          id: "$_id",
+          rank: 1,
+          name: 1,
+          symbol: 1,
+          description: 1,
+          industry: 1,
+          sector: 1,
+          financial: {
+            marketCap: "$financial.market_cap",
+            revenue: 1,
+            grossProfit: "$financial.gross_profit",
+            operatingIncome: "$financial.operating_income",
+          },
+          ratios: {
+            per: 1,
+            pbr: 1,
+            roa: 1,
+          },
+          imgUrl: "$img_url",
+          investUrl: "$invest_url",
         },
-        ratios: {
-          per: 1,
-          pbr: 1,
-          roa: 1,
-        },
-        imgUrl: "$img_url",
-        investUrl: "$invest_url",
       },
-    },
-  ]);
-  res.setHeader("Cache-Control", "public, max-age=3600");
-  res.send(stocks);
+    ]);
+    res.setHeader("Cache-Control", "public, max-age=3600");
+    res.send(stocks);
+  } catch (error) {
+    next(error);
+  }
 });
 
 export default router;

@@ -23,26 +23,30 @@ export const getUserStocks = async (req, res, next) => {
 };
 
 export const saveUserStocks = async (req, res, next) => {
-  const new_stocks = keysToSnakeCase(req.body.stocks);
-  if (!new_stocks) next();
+  try {
+    const new_stocks = keysToSnakeCase(req.body.stocks);
+    if (!new_stocks) next();
 
-  const user_id = req.user;
-  const original_stocks = await getStocks(user_id);
-  const { newStocks, next_stock_id, next_item_id, oldAndNewIdMap } =
-    getNewStocksData(
-      new_stocks,
-      original_stocks.next_stock_id,
-      original_stocks.next_item_id
+    const user_id = req.user;
+    const original_stocks = await getStocks(user_id);
+    const { newStocks, next_stock_id, next_item_id, oldAndNewIdMap } =
+      getNewStocksData(
+        new_stocks,
+        original_stocks.next_stock_id,
+        original_stocks.next_item_id
+      );
+
+    req.stockOldAndNewIdMap = oldAndNewIdMap;
+    await userStocks.findOneAndUpdate(
+      { user_id },
+      { $set: { ...newStocks, next_stock_id, next_item_id } },
+      { new: true, upsert: false }
     );
 
-  req.stockOldAndNewIdMap = oldAndNewIdMap;
-  await userStocks.findOneAndUpdate(
-    { user_id },
-    { $set: { ...newStocks, next_stock_id, next_item_id } },
-    { new: true, upsert: false }
-  );
-
-  next();
+    next();
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const replaceUserStocks = async (req, res, next) => {
@@ -75,56 +79,64 @@ export const replaceUserStocks = async (req, res, next) => {
 };
 
 export const addNewStock = async (req, res, next) => {
-  const user_id = req.user;
-  const original_stocks = await getStocks(user_id);
-  const newStock = getNewStock(
-    original_stocks.next_stock_id,
-    original_stocks.next_item_id
-  );
+  try {
+    const user_id = req.user;
+    const original_stocks = await getStocks(user_id);
+    const newStock = getNewStock(
+      original_stocks.next_stock_id,
+      original_stocks.next_item_id
+    );
 
-  await userStocks.findOneAndUpdate(
-    { user_id },
-    {
-      $set: {
-        [`stocks.${original_stocks.next_stock_id}`]: newStock,
-        next_stock_id: original_stocks.next_stock_id + 1,
-        next_item_id: original_stocks.next_item_id + 1,
+    await userStocks.findOneAndUpdate(
+      { user_id },
+      {
+        $set: {
+          [`stocks.${original_stocks.next_stock_id}`]: newStock,
+          next_stock_id: original_stocks.next_stock_id + 1,
+          next_item_id: original_stocks.next_item_id + 1,
+        },
       },
-    },
-    { upsert: false }
-  );
+      { upsert: false }
+    );
 
-  req.stocks = {
-    stock_id: original_stocks.next_stock_id,
-    item_id: original_stocks.next_item_id,
-  };
+    req.stocks = {
+      stock_id: original_stocks.next_stock_id,
+      item_id: original_stocks.next_item_id,
+    };
 
-  next();
+    next();
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const addNewItem = async (req, res, next) => {
-  const user_id = req.user;
-  const stock_id = req.params.stockId;
-  const { next_item_id } = await getStocks(user_id);
-  const newStock = getNewItem(next_item_id);
+  try {
+    const user_id = req.user;
+    const stock_id = req.params.stockId;
+    const { next_item_id } = await getStocks(user_id);
+    const newStock = getNewItem(next_item_id);
 
-  await userStocks.findOneAndUpdate(
-    { user_id },
-    {
-      $set: {
-        [`stocks.${stock_id}.items.${next_item_id}`]: newStock,
-        next_item_id: next_item_id + 1,
+    await userStocks.findOneAndUpdate(
+      { user_id },
+      {
+        $set: {
+          [`stocks.${stock_id}.items.${next_item_id}`]: newStock,
+          next_item_id: next_item_id + 1,
+        },
       },
-    },
-    { upsert: false }
-  );
+      { upsert: false }
+    );
 
-  req.stocks = {
-    stock_id,
-    item_id: next_item_id,
-  };
+    req.stocks = {
+      stock_id,
+      item_id: next_item_id,
+    };
 
-  next();
+    next();
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const addUserStockSample = async (req, res, next) => {
