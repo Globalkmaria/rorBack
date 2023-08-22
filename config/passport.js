@@ -21,7 +21,7 @@ passport.use(
     {
       clientID: config.google.clientId,
       clientSecret: config.google.clientSecret,
-      callbackURL: config.google.callbackURL,
+      callbackURL: config.server.url + config.google.callbackURL,
       userProfileURL: config.google.userProfileURL,
     },
     function (accessToken, refreshToken, profile, cb) {

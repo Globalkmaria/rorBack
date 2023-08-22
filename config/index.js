@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config();
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 const required = (key, defaultValue = undefined) => {
   const value = process.env[key] || defaultValue;
@@ -10,6 +10,9 @@ const required = (key, defaultValue = undefined) => {
 };
 
 export const config = {
+  server: {
+    url: required("SERVER_URL", "http://localhost:8080"),
+  },
   port: parseInt(required("PORT", 8080)),
   cors: {
     allowedOrigin: required("CORS_ALLOW_ORIGIN"),
@@ -43,3 +46,6 @@ export const sessionOptions = {
   resave: false,
   saveUninitialized: false,
 };
+
+console.log("NODE_ENV", `.env.${process.env.NODE_ENV}`);
+console.log("corsOption", config.cors.allowedOrigin);
