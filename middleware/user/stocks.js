@@ -81,10 +81,13 @@ export const replaceUserStocks = async (req, res, next) => {
 export const addNewStock = async (req, res, next) => {
   try {
     const user_id = req.user;
+    const { date, time } = req.body;
     const original_stocks = await getStocks(user_id);
     const newStock = getNewStock(
       original_stocks.next_stock_id,
-      original_stocks.next_item_id
+      original_stocks.next_item_id,
+      date,
+      time
     );
 
     await userStocks.findOneAndUpdate(
@@ -113,9 +116,10 @@ export const addNewStock = async (req, res, next) => {
 export const addNewItem = async (req, res, next) => {
   try {
     const user_id = req.user;
+    const { date, time } = req.body;
     const stock_id = req.params.stockId;
     const { next_item_id } = await getStocks(user_id);
-    const newStock = getNewItem(next_item_id);
+    const newStock = getNewItem(next_item_id, date, time);
 
     await userStocks.findOneAndUpdate(
       { user_id },

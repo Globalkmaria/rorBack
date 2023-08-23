@@ -71,18 +71,18 @@ export const getNewGroupsData = (
   return { newGroups, next_group_id };
 };
 
-export const getNewItem = (next_item_id) => {
+export const getNewItem = (next_item_id, date = new Date(), time = "00:00") => {
   return {
     id: next_item_id,
-    buy_date: new Date(),
-    buy_time: "00:00",
+    buy_date: new Date(date),
+    buy_time: time,
     quantity: 0,
     buy_price: 0,
     created_at: new Date(),
   };
 };
 
-export const getNewStock = (next_stock_id, next_item_id) => {
+export const getNewStock = (next_stock_id, next_item_id, date, time) => {
   return {
     info: {
       id: next_stock_id,
@@ -91,7 +91,7 @@ export const getNewStock = (next_stock_id, next_item_id) => {
       created_at: new Date(),
     },
     items: {
-      [next_item_id]: getNewItem(next_item_id),
+      [next_item_id]: getNewItem(next_item_id, date, time),
     },
   };
 };
