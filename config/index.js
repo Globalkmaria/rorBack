@@ -46,6 +46,3 @@ export const sessionOptions = {
   resave: false,
   saveUninitialized: false,
 };
-
-console.log("NODE_ENV", `.env.${process.env.NODE_ENV}`);
-console.log("corsOption", config.cors.allowedOrigin);
