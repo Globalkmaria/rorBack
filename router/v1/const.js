@@ -22,7 +22,14 @@ const topStockSchema = new mongoose.Schema({
     pbr: Number,
     roa: Number,
   },
-  img_url: String,
+  img: {
+    url: String,
+    webp: String,
+    webp_300: String,
+    webp_400: String,
+    jpg: String,
+  },
+
   invest_url: String,
 });
 
@@ -52,6 +59,13 @@ router.get("/top-stocks", async (req, res, next) => {
             roa: 1,
           },
           imgUrl: "$img_url",
+          img: {
+            url: "$img.url",
+            webp: "$img.webp",
+            webp300: "$img.webp_300",
+            webp400: "$img.webp_400",
+            jpg: "$img.jpg",
+          },
           investUrl: "$invest_url",
         },
       },
