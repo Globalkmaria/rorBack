@@ -4,7 +4,7 @@ import session from "express-session";
 import passport from "passport";
 import cors from "cors";
 
-import { config, corsOption, sessionOptions } from "./config/index.js";
+import { config, corsOption, getSessions } from "./config/index.js";
 import v1 from "./router/v1/index.js";
 import { errorHandler, notFound } from "./middleware/errorHandlers.js";
 
@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cors(corsOption));
 app.use(morgan("tiny"));
 
-app.use(session(sessionOptions));
+app.use(session(getSessions()));
 
 app.use(passport.initialize());
 app.use(passport.session());

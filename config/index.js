@@ -41,8 +41,17 @@ export const corsOption = {
   credentials: true,
 };
 
-export const sessionOptions = {
+const sessionOptions = {
   secret: config.session.secret,
   resave: false,
   saveUninitialized: false,
+};
+
+export const getSessions = () => {
+  if (process.env.NODE_ENV === "dev") return sessionOptions;
+
+  return {
+    ...sessionOptions,
+    cookie: { secure: true },
+  };
 };
