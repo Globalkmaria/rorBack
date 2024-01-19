@@ -58,7 +58,6 @@ router.get("/top-stocks", async (req, res, next) => {
             pbr: 1,
             roa: 1,
           },
-          imgUrl: "$img_url",
           img: {
             url: "$img.url",
             webp: "$img.webp",
