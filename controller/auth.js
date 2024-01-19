@@ -15,7 +15,7 @@ export const me = async (req, res, next) => {
       return res.status(200).json({ user: { username: req.user.username } });
     }
 
-    return res.status(404).send({ message: "User not found" });
+    return res.status(200).send({ user: null, message: "User not found" });
   } catch (err) {
     next(err);
   }
