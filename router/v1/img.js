@@ -18,7 +18,10 @@ router.get("/:folder/:id", async (req, res, next) => {
     let contentType = "image/jpeg";
     if (id.endsWith(".webp")) contentType = "image/webp";
 
-    res.writeHead(200, { "Content-Type": contentType });
+    res.writeHead(200, {
+      "Content-Type": contentType,
+      "cache-control": "max-age=604800, public",
+    });
     data.Body.pipe(res);
   } catch (error) {
     next(error);
