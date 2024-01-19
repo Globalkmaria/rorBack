@@ -33,6 +33,12 @@ export const config = {
   frontend: {
     url: required("FRONTEND_URL"),
   },
+  aws: {
+    accessKeyId: required("AWS_ACCESS_KEY_ID"),
+    secretAccessKey: required("AWS_SECRET_ACCESS_KEY"),
+    bucketName: required("AWS_BUCKET_NAME"),
+    region: required("AWS_REGION"),
+  },
 };
 
 export const corsOption = {
