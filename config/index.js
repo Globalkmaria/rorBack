@@ -53,11 +53,4 @@ const sessionOptions = {
   saveUninitialized: false,
 };
 
-export const getSessions = () => {
-  if (process.env.NODE_ENV === "dev") return sessionOptions;
-
-  return {
-    ...sessionOptions,
-    cookie: { secure: true },
-  };
-};
+export const getSessions = sessionOptions;
