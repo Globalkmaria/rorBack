@@ -53,4 +53,4 @@ const sessionOptions = {
   saveUninitialized: false,
 };
 
-export const getSessions = sessionOptions;
+export const getSessions = () => sessionOptions;
