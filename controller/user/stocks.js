@@ -118,7 +118,7 @@ export const editUserItem = async (req, res, next) => {
   }
 };
 
-export const deleteUserItem = async (req, res) => {
+export const deleteUserItem = async (req, res, next) => {
   try {
     const user_id = req.user;
     const stock_id = req.params.stockId;
