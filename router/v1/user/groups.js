@@ -4,7 +4,9 @@ import {
   saveUserGroups,
 } from "../../../middleware/user/groups.js";
 import {
+  addPurchasedItemToGroup,
   addUserNewGroup,
+  deletePurchasedItemFromGroup,
   deleteUserGroup,
 } from "../../../controller/user/groups.js";
 
@@ -21,5 +23,8 @@ router.patch("/", saveUserGroups, async (req, res) => {
 router.post("/", addUserNewGroup);
 
 router.delete("/:groupId", deleteUserGroup);
+
+router.post("/:groupId/:stockId/:itemId", addPurchasedItemToGroup);
+router.delete("/:groupId/:stockId/:itemId", deletePurchasedItemFromGroup);
 
 export default router;

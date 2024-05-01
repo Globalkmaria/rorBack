@@ -40,3 +40,43 @@ export const deleteUserGroup = async (req, res, next) => {
     next(error);
   }
 };
+
+export const addPurchasedItemToGroup = async (req, res, next) => {
+  try {
+    const user_id = req.user;
+    const { groupId, stockId, itemId } = req.params;
+
+    const originalGroups = await getGroups(user_id);
+    const group = originalGroups.groups.get(groupId);
+    const stock = group.stocks.get(stockId);
+    stock.push(itemId);
+    await originalGroups.save();
+
+    return res.status(201).send();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deletePurchasedItemFromGroup = async (req, res, next) => {
+  try {
+    const user_id = req.user;
+    const { groupId, stockId, itemId } = req.params;
+
+    const originalGroups = await getGroups(user_id);
+    const group = originalGroups.groups.get(groupId);
+    const stock = group.stocks.get(stockId);
+
+    const index = stock.indexOf(itemId);
+    stock.splice(index, 1);
+
+    if (stock.length === 0) {
+      originalGroups.groups.get(groupId).stocks.delete(stockId);
+    }
+
+    await originalGroups.save();
+    return res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+};
