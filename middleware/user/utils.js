@@ -1,4 +1,6 @@
+import { INIT_SOLDS_DATA } from "../../data/solds.js";
 import userGroups from "../../models/users/groups.js";
+import userSolds from "../../models/users/solds.js";
 import userStocks from "../../models/users/stocks.js";
 import { removeProperties } from "../../utils/removeProperties.js";
 
@@ -45,6 +47,38 @@ export const getNewStocksData = (
     newStocks[`stocks.${next_stock_id++}`] = stock;
   }
   return { newStocks, next_stock_id, next_item_id, oldAndNewIdMap };
+};
+
+const NOT_USED_USER_SOLDS_PROPERTY = ["__v", "user_id"];
+export const filterUserSoldsProps = (userSolds) => {
+  return removeProperties(userSolds, NOT_USED_USER_SOLDS_PROPERTY);
+};
+
+export const getNewSoldsData = (new_solds, next_id) => {
+  let new_next_id = next_id;
+  const new_sold_items = Object.keys(new_solds.solds).reduce((acc, key) => {
+    acc[`solds.${new_next_id}`] = {
+      ...new_solds.solds[key],
+      id: new_next_id++,
+    };
+    return acc;
+  }, {});
+
+  return {
+    new_sold_items,
+    new_next_id,
+  };
+};
+
+export const getPurchasedItemsToDelete = (new_solds) => {
+  const items = {};
+
+  for (const sold of new_solds) {
+    const { stock_id, purchased_id } = sold;
+    items[`stocks.${stock_id}.items.${purchased_id}`] = "";
+  }
+
+  return items;
 };
 
 export const getNewGroupsData = (
@@ -96,6 +130,23 @@ export const getNewStock = (next_stock_id, next_item_id, date, time) => {
   };
 };
 
+export const getNewSold = (soldInfo, date = new Date(), time = "00:00", id) => {
+  return {
+    id,
+    stock_name: soldInfo.stock_name,
+    stock_id: soldInfo.stock_id,
+    purchased_id: soldInfo.purchased_id,
+    purchased_quantity: soldInfo.purchased_quantity,
+    purchased_date: soldInfo.purchased_date,
+    purchased_time: soldInfo.purchased_time,
+    purchased_price: soldInfo.purchased_price,
+    sold_date: date,
+    sold_time: time,
+    sold_price: soldInfo.sold_price,
+    created_at: new Date(),
+  };
+};
+
 export const getStocks = async (user_id) => {
   let stocks = await userStocks.findOne({ user_id });
   if (!stocks) {
@@ -121,4 +172,17 @@ export const getGroups = async (user_id) => {
   }
 
   return groups;
+};
+
+export const getSolds = async (user_id) => {
+  let solds = await userSolds.findOne({ user_id });
+
+  if (!solds) {
+    solds = await userSolds.create({
+      user_id,
+      ...INIT_SOLDS_DATA,
+    });
+  }
+
+  return solds;
 };
