@@ -7,6 +7,7 @@ import {
 import {
   addNewSolds,
   getUserSolds,
+  replaceUserSolds,
   saveUserSolds,
 } from "../../../middleware/user/solds.js";
 
@@ -21,6 +22,11 @@ router.get("/", getUserSolds, (req, res) => {
 });
 
 router.patch("/", saveUserSolds, (req, res) => res.status(200).send());
+
+router.put("/", replaceUserSolds, (req, res) => {
+  req.solds.save();
+  res.status(200).send();
+});
 
 router.patch("/:soldId", editUserItem);
 
