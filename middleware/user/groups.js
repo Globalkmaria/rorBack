@@ -51,6 +51,8 @@ export const replaceUserGroups = async (req, res, next) => {
     const user_id = req.user;
     const original_groups = await getGroups(user_id);
 
+    original_groups.groups.clear();
+
     for (const groupId in groups) {
       original_groups.set(`groups.${groupId}`, groups[groupId]);
     }

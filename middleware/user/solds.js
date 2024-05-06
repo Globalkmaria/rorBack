@@ -51,7 +51,7 @@ export const saveUserSolds = async (req, res, next) => {
 
 export const replaceUserSolds = async (req, res, next) => {
   try {
-    const solds = keysToSnakeCase(req.body.solds);
+    const { solds, next_id } = keysToSnakeCase(req.body.solds);
     if (!solds) next();
 
     const user_id = req.user;
@@ -59,9 +59,9 @@ export const replaceUserSolds = async (req, res, next) => {
 
     original_solds.solds.clear();
 
-    for (const sold_id in solds.solds) {
+    Object.keys(solds).forEach((sold_id) => {
       original_solds.set(`solds.${sold_id}`, solds[sold_id]);
-    }
+    });
     original_solds.set("next_id", next_id);
 
     await original_solds.validate();
