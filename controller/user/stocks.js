@@ -1,3 +1,4 @@
+import { getStocks } from "../../middleware/user/utils.js";
 import userStocks from "../../models/users/stocks.js";
 import { keysToSnakeCase } from "../../utils/keysToSnakeCase.js";
 
@@ -134,6 +135,36 @@ export const deleteUserItem = async (req, res, next) => {
     );
 
     res.status(204).send();
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const editUserStockPrices = async (req, res, next) => {
+  try {
+    const user_id = req.user;
+    const { prices } = keysToSnakeCase(req.body);
+
+    if (!prices) return res.status(400).send();
+
+    const original_stocks = await getStocks(user_id);
+
+    Object.keys(prices).forEach((stock_id) => {
+      const price = prices[stock_id];
+      const stock = original_stocks.stocks.get(stock_id);
+
+      if (!stock) {
+        return res.status(404).send({
+          message: "There was no matching stock found for the given user.",
+        });
+      }
+
+      stock.set(`info.current_price`, price);
+    });
+
+    await original_stocks.save();
+
+    return res.status(200).send();
   } catch (err) {
     next(err);
   }

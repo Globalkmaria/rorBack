@@ -10,6 +10,7 @@ import {
   deleteUserStock,
   editUserItem,
   editUserStock,
+  editUserStockPrices,
 } from "../../../controller/user/stocks.js";
 import { keysToCamelCase } from "../../../utils/keysToCamelCase.js";
 
@@ -24,6 +25,8 @@ router.patch("/", saveUserStocks, (req, res) => res.status(200).send());
 router.post("/", addNewStock, (req, res) => {
   res.status(201).json(keysToCamelCase(req.stocks));
 });
+
+router.patch("/prices", editUserStockPrices);
 
 router.patch("/:stockId", editUserStock);
 
