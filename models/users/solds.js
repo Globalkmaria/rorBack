@@ -49,6 +49,10 @@ const soldSchema = new Schema(
       type: Number,
       required: true,
     },
+    tag: {
+      type: String,
+      required: true,
+    },
     created_at: {
       type: Date,
     },

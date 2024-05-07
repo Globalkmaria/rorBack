@@ -29,17 +29,13 @@ export const saveUserStocks = async (req, res, next) => {
 
     const user_id = req.user;
     const original_stocks = await getStocks(user_id);
-    const { newStocks, next_stock_id, next_item_id, oldAndNewIdMap } =
-      getNewStocksData(
-        new_stocks,
-        original_stocks.next_stock_id,
-        original_stocks.next_item_id
-      );
+    const { newStocks, next_stock_id, next_item_id, tags, oldAndNewIdMap } =
+      getNewStocksData(new_stocks, original_stocks);
 
     req.stockOldAndNewIdMap = oldAndNewIdMap;
     await userStocks.findOneAndUpdate(
       { user_id },
-      { $set: { ...newStocks, next_stock_id, next_item_id } },
+      { $set: { ...newStocks, next_stock_id, next_item_id, tags } },
       { new: true, upsert: false }
     );
 
@@ -51,7 +47,7 @@ export const saveUserStocks = async (req, res, next) => {
 
 export const replaceUserStocks = async (req, res, next) => {
   try {
-    const { stocks, next_stock_id, next_item_id } = keysToSnakeCase(
+    const { stocks, next_stock_id, next_item_id, tags } = keysToSnakeCase(
       req.body.stocks
     );
     if (!stocks) next();
@@ -66,6 +62,7 @@ export const replaceUserStocks = async (req, res, next) => {
     }
     original_stocks.set("next_stock_id", next_stock_id);
     original_stocks.set("next_item_id", next_item_id);
+    original_stocks.set("tags", [...new Set(tags)]);
 
     await original_stocks.validate();
 
@@ -151,6 +148,7 @@ export const addUserStockSample = async (req, res, next) => {
     original_stocks.set("stocks", SAMPLE_STOCKS_DATA.stocks);
     original_stocks.set("next_stock_id", SAMPLE_STOCKS_DATA.next_stock_id);
     original_stocks.set("next_item_id", SAMPLE_STOCKS_DATA.next_item_id);
+    original_stocks.set("tags", SAMPLE_STOCKS_DATA.tags);
 
     await original_stocks.save();
     next();

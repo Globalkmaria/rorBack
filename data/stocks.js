@@ -11,6 +11,7 @@ export const SAMPLE_STOCKS_DATA = {
         id: "1",
         name: "Google",
         current_price: 3400,
+        tag: "stock",
       },
       items: {
         2: {
@@ -34,6 +35,7 @@ export const SAMPLE_STOCKS_DATA = {
         id: "2",
         name: "Apple",
         current_price: 2000,
+        tag: "stock",
       },
       items: {
         3: {
@@ -101,4 +103,5 @@ export const SAMPLE_STOCKS_DATA = {
   },
   next_stock_id: 5,
   next_item_id: 15,
+  tags: ["stock", "bond"],
 };
