@@ -27,8 +27,8 @@ export const getNewStocksData = (new_stocks, original_stocks) => {
 
   const newStocks = {};
 
-  for (const stockId in new_stocks) {
-    const stock = new_stocks[stockId];
+  for (const stockId of Object.keys(new_stocks.stocks)) {
+    const stock = new_stocks.stocks[stockId];
 
     for (const itemId in stock.items) {
       stock.items[itemId].id = next_item_id;
@@ -149,7 +149,7 @@ export const getNewSold = (soldInfo, date = new Date(), time = "00:00", id) => {
     sold_date: date,
     sold_time: time,
     sold_price: soldInfo.sold_price,
-    tag: "",
+    tag: soldInfo.tag,
     created_at: new Date(),
   };
 };

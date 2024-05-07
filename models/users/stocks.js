@@ -51,7 +51,6 @@ const StockSchema = new Schema(
       },
       tag: {
         type: String,
-        required: true,
       },
     },
     items: {

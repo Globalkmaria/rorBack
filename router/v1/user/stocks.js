@@ -6,6 +6,8 @@ import {
   saveUserStocks,
 } from "../../../middleware/user/stocks.js";
 import {
+  addNewTag,
+  deleteTag,
   deleteUserItem,
   deleteUserStock,
   editUserItem,
@@ -37,7 +39,9 @@ router.post("/:stockId/items", addNewItem, (req, res) => {
 });
 
 router.patch("/:stockId/items/:itemId", editUserItem);
-
 router.delete("/:stockId/items/:itemId", deleteUserItem);
+
+router.post("/tags/:tag", addNewTag);
+router.delete("/tags/:tag", deleteTag);
 
 export default router;

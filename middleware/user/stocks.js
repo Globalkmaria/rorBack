@@ -25,7 +25,7 @@ export const getUserStocks = async (req, res, next) => {
 export const saveUserStocks = async (req, res, next) => {
   try {
     const new_stocks = keysToSnakeCase(req.body.stocks);
-    if (!new_stocks) next();
+    if (!new_stocks || !Object.keys(new_stocks)) next();
 
     const user_id = req.user;
     const original_stocks = await getStocks(user_id);
