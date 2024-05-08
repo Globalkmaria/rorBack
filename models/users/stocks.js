@@ -49,6 +49,9 @@ const StockSchema = new Schema(
       created_at: {
         type: Date,
       },
+      tag: {
+        type: String,
+      },
     },
     items: {
       type: Map,
@@ -76,6 +79,10 @@ export const userStocksSchema = new Schema(
     stocks: {
       type: Map,
       of: StockSchema,
+      required: true,
+    },
+    tags: {
+      type: [String],
       required: true,
     },
   },

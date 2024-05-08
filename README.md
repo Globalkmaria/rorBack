@@ -72,48 +72,38 @@ This project allows you to:
   - Skills : React.js, Typescript, Redux, React-Router, Style-components, Chart.js
   - Deployment : Netlify
 
-## Version History
-
-### Version 1.0.0 (2023-08-22)
-
-- Initial release.
-
-## ERD
-
-<img src="https://velog.velcdn.com/images/tjdgus0528/post/a7153c7f-8945-47fb-bd96-f41ce84f14f3/image.png" alt="image" width="700" height="400">
-
 ## Snapshot
 
-- Home
+- Home page
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/c76631c5-ba57-4083-9d22-9d5aa7410580/image.png" alt="image" width="700" height="400">
+  <img src="https://velog.velcdn.com/images/tjdgus0528/post/1ee999cd-c5a0-49c2-9bf6-29832bd95200/image.png" alt="image" width="700" height="400">
 
-- List page
+- Current page
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/30b941c0-d6ab-4add-9ec6-ee7fac1c93b5/image.png" alt="image" width="700" height="400">
+  <img src="https://velog.velcdn.com/images/tjdgus0528/post/185152d2-eccd-44bd-9153-b146ab1ab949/image.png" alt="image" width="700" height="400">
 
 - Add group
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/1126a019-0429-4063-983d-e10e83420dbd/image.png" alt="image" width="700" height="400">
+  <img src="https://velog.velcdn.com/images/tjdgus0528/post/d279bb52-5715-434c-b862-ce53576a5d6b/image.png" alt="image" width="700" height="400">
 
-- Delete group
+- Edit current prices
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/d499c9d5-5f67-4dc6-bf34-5bf16a965111/image.png" alt="image" width="700" height="400">
+  <img src="https://velog.velcdn.com/images/tjdgus0528/post/0ce5af52-941c-41e9-a381-f1bef6abd936/image.png" alt="image" width="700" height="400">
 
-- Chart
+- Chart page
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/3c0edebd-f385-445c-b858-7229c650f047/image.png" alt="image" width="700" height="400">
+  <img src="https://velog.velcdn.com/images/tjdgus0528/post/01e9bb11-e707-41cb-8e28-f079f81eced5/image.png" alt="image" width="700" height="400">
 
-- Login
+- Sold page
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/1de36fb9-f135-4704-a309-900fc6798ffe/image.png" alt="image" width="700" height="400">
+  <img src="https://velog.velcdn.com/images/tjdgus0528/post/13b99a57-ddfa-4970-897e-c8faf28368a6/image.png" alt="image" width="700" height="400">
 
-- Sign up
+- Login page
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/877510aa-f61b-4d57-b6f5-0845d773f191/image.png" alt="image" width="700" height="400">
+  <img src="https://velog.velcdn.com/images/tjdgus0528/post/2f836849-5571-40b4-b1c8-f65c2e9d4966/image.png" alt="image" width="700" height="400">
 
 - Data Sync when there is local data and login
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/28ab7e91-6b79-488c-82b9-782f94619d34/image.png" alt="image" width="700" height="400">
+  <img src="https://velog.velcdn.com/images/tjdgus0528/post/6d12a3fc-7a03-4f80-be34-c36459f2cdbc/image.png" alt="image" width="700" height="400">
 
 Licensed under GNU v3.0

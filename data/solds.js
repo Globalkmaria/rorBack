@@ -3,7 +3,7 @@ export const INIT_SOLDS_DATA = {
   next_id: 1,
 };
 
-export const SAMPLE_SOLD_LIST = {
+const SAMPLE_SOLD_LIST = {
   1: {
     id: "1",
     stock_id: "111",
@@ -16,6 +16,7 @@ export const SAMPLE_SOLD_LIST = {
     sold_date: "2023-06-05",
     sold_time: "14:14",
     sold_price: 2200,
+    tag: "stock",
   },
   2: {
     id: "2",
@@ -29,6 +30,7 @@ export const SAMPLE_SOLD_LIST = {
     sold_date: "2023-06-03",
     sold_time: "15:13",
     sold_price: 2500,
+    tag: "",
   },
   3: {
     id: "3",
@@ -42,6 +44,7 @@ export const SAMPLE_SOLD_LIST = {
     sold_date: "2023-06-05",
     sold_time: "14:13",
     sold_price: 1800,
+    tag: "",
   },
 };
 

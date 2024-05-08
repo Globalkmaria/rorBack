@@ -16,13 +16,9 @@ export const filterUserGroupsProps = (userStocks) => {
   return removeProperties(userStocks, NOT_USED_USER_GROUPS_PROPERTY);
 };
 
-export const getNewStocksData = (
-  new_stocks,
-  original_next_stock_id,
-  original_next_item_id
-) => {
-  let next_stock_id = original_next_stock_id;
-  let next_item_id = original_next_item_id;
+export const getNewStocksData = (new_stocks, original_stocks) => {
+  let next_stock_id = original_stocks.next_stock_id;
+  let next_item_id = original_stocks.next_item_id;
 
   const oldAndNewIdMap = {
     stocks: {},
@@ -31,8 +27,8 @@ export const getNewStocksData = (
 
   const newStocks = {};
 
-  for (const stockId in new_stocks) {
-    const stock = new_stocks[stockId];
+  for (const stockId of Object.keys(new_stocks.stocks)) {
+    const stock = new_stocks.stocks[stockId];
 
     for (const itemId in stock.items) {
       stock.items[itemId].id = next_item_id;
@@ -46,7 +42,16 @@ export const getNewStocksData = (
     oldAndNewIdMap.stocks[stockId] = next_stock_id;
     newStocks[`stocks.${next_stock_id++}`] = stock;
   }
-  return { newStocks, next_stock_id, next_item_id, oldAndNewIdMap };
+
+  const new_tags = [...new Set([...original_stocks.tags, ...new_stocks.tags])];
+
+  return {
+    newStocks,
+    next_stock_id,
+    next_item_id,
+    oldAndNewIdMap,
+    tags: new_tags,
+  };
 };
 
 const NOT_USED_USER_SOLDS_PROPERTY = ["__v", "user_id"];
@@ -121,6 +126,7 @@ export const getNewStock = (next_stock_id, next_item_id, date, time) => {
     info: {
       id: next_stock_id,
       name: "",
+      tag: "",
       current_price: 0,
       created_at: new Date(),
     },
@@ -143,6 +149,7 @@ export const getNewSold = (soldInfo, date = new Date(), time = "00:00", id) => {
     sold_date: date,
     sold_time: time,
     sold_price: soldInfo.sold_price,
+    tag: soldInfo.tag,
     created_at: new Date(),
   };
 };
@@ -155,6 +162,7 @@ export const getStocks = async (user_id) => {
       next_stock_id: 1,
       next_item_id: 1,
       stocks: new Map(),
+      tags: [],
     });
   }
   return stocks;
