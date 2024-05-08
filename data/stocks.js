@@ -100,8 +100,32 @@ export const SAMPLE_STOCKS_DATA = {
         },
       },
     },
+    5: {
+      info: {
+        id: "5",
+        name: "TLT",
+        current_price: 4000,
+        tag: "bond",
+      },
+      items: {
+        16: {
+          id: "16",
+          buy_date: "2024-02-22T00:00:00.000+0000",
+          buy_time: "14:15",
+          quantity: 1,
+          buy_price: 3400,
+        },
+        17: {
+          id: "17",
+          buy_date: "2024-04-28T00:00:00.000+0000",
+          buy_time: "15:26",
+          quantity: 2,
+          buy_price: 4300,
+        },
+      },
+    },
   },
   next_stock_id: 5,
-  next_item_id: 15,
+  next_item_id: 18,
   tags: ["stock", "bond"],
 };
