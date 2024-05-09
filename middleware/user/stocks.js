@@ -139,20 +139,3 @@ export const addNewItem = async (req, res, next) => {
     next(err);
   }
 };
-
-export const addUserStockSample = async (req, res, next) => {
-  try {
-    const user_id = req.user;
-    const original_stocks = await getStocks(user_id);
-
-    original_stocks.set("stocks", SAMPLE_STOCKS_DATA.stocks);
-    original_stocks.set("next_stock_id", SAMPLE_STOCKS_DATA.next_stock_id);
-    original_stocks.set("next_item_id", SAMPLE_STOCKS_DATA.next_item_id);
-    original_stocks.set("tags", SAMPLE_STOCKS_DATA.tags);
-
-    await original_stocks.save();
-    next();
-  } catch (error) {
-    next(error);
-  }
-};

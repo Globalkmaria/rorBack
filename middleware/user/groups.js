@@ -1,4 +1,3 @@
-import { SAMPLE_GROUPS_DATA } from "../../data/groups.js";
 import userGroups from "../../models/users/groups.js";
 import { keysToCamelCase } from "../../utils/keysToCamelCase.js";
 import { keysToSnakeCase } from "../../utils/keysToSnakeCase.js";
@@ -66,20 +65,5 @@ export const replaceUserGroups = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     return res.status(400).json({ message: err.message });
-  }
-};
-
-export const addUserGroupSample = async (req, res, next) => {
-  try {
-    const user_id = req.user;
-    const original_groups = await getGroups(user_id);
-
-    original_groups.set("groups", SAMPLE_GROUPS_DATA.groups);
-    original_groups.set("next_group_id", SAMPLE_GROUPS_DATA.next_group_id);
-
-    await original_groups.save();
-    next();
-  } catch (error) {
-    next(error);
   }
 };
