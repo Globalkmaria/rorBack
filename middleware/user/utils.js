@@ -61,7 +61,7 @@ export const filterUserSoldsProps = (userSolds) => {
 
 export const getNewSoldsData = (new_solds, next_id) => {
   let new_next_id = next_id;
-  const new_sold_items = Object.keys(new_solds.solds).reduce((acc, key) => {
+  const new_sold_items = Object.keys(new_solds?.solds).reduce((acc, key) => {
     acc[`solds.${new_next_id}`] = {
       ...new_solds.solds[key],
       id: new_next_id++,
