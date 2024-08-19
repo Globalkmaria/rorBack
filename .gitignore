@@ -4,3 +4,4 @@
 keep.js
 .env.dev
 .env.prod
+.DS_Store
