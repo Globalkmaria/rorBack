@@ -1,5 +1,7 @@
+import { INIT_NOTES_DATA } from "../../data/notes.js";
 import { INIT_SOLDS_DATA } from "../../data/solds.js";
 import userGroups from "../../models/users/groups.js";
+import userNotes from "../../models/users/notes.js";
 import userSolds from "../../models/users/solds.js";
 import userStocks from "../../models/users/stocks.js";
 import { removeProperties } from "../../utils/removeProperties.js";
@@ -193,4 +195,17 @@ export const getSolds = async (user_id) => {
   }
 
   return solds;
+};
+
+export const getNotes = async (user_id) => {
+  let notes = await userNotes.findOne({ user_id });
+
+  if (!notes) {
+    notes = await userNotes.create({
+      user_id,
+      ...INIT_NOTES_DATA,
+    });
+  }
+
+  return notes;
 };
