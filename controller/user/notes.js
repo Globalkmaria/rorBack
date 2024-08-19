@@ -1,4 +1,5 @@
-import { getNotes } from "../../middleware/user/utils.js";
+import { filterNoteListProps, getNotes } from "../../middleware/user/utils.js";
+import { keysToCamelCase } from "../../utils/keysToCamelCase.js";
 import { keysToSnakeCase } from "../../utils/keysToSnakeCase.js";
 
 export const addNewNote = async (req, res, next) => {
@@ -27,6 +28,21 @@ export const addNewNote = async (req, res, next) => {
     if (error.name.includes("ValidationError"))
       return res.status(400).json({ message: error.message });
 
+    next(error);
+  }
+};
+
+export const getUserNotes = async (req, res, next) => {
+  try {
+    const user_id = req.user;
+
+    const notes = await getNotes(user_id);
+    const noteList = filterNoteListProps(notes.entries);
+
+    res
+      .status(200)
+      .json({ nextId: notes.next_id, notes: keysToCamelCase(noteList) });
+  } catch (error) {
     next(error);
   }
 };

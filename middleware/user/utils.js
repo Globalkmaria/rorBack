@@ -77,6 +77,13 @@ export const getNewSoldsData = (new_solds, next_id) => {
   };
 };
 
+const NOT_USED_USER_NOTES_PROPERTY = ["_id"];
+export const filterNoteListProps = (entries) => {
+  return [...entries.values()].map((note) =>
+    removeProperties(note, NOT_USED_USER_NOTES_PROPERTY)
+  );
+};
+
 export const getPurchasedItemsToDelete = (new_solds) => {
   const items = {};
 
@@ -199,7 +206,6 @@ export const getSolds = async (user_id) => {
 
 export const getNotes = async (user_id) => {
   let notes = await userNotes.findOne({ user_id });
-
   if (!notes) {
     notes = await userNotes.create({
       user_id,
