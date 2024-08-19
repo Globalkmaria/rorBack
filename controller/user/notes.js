@@ -14,11 +14,10 @@ export const addNewNote = async (req, res, next) => {
       ...note,
     };
     original_notes.entries.set(next_id, new_note);
+    original_notes.next_id++;
 
     const result = await original_notes.save();
     if (result) {
-      original_notes.next_id++;
-
       const { createdAt, updatedAt, id } = result.get("entries").get(next_id);
       return res.status(201).json({ createdAt, updatedAt, id });
     }
