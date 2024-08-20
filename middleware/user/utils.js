@@ -1,5 +1,7 @@
+import { INIT_NOTES_DATA } from "../../data/notes.js";
 import { INIT_SOLDS_DATA } from "../../data/solds.js";
 import userGroups from "../../models/users/groups.js";
+import userNotes from "../../models/users/notes.js";
 import userSolds from "../../models/users/solds.js";
 import userStocks from "../../models/users/stocks.js";
 import { removeProperties } from "../../utils/removeProperties.js";
@@ -71,6 +73,31 @@ export const getNewSoldsData = (new_solds, next_id) => {
 
   return {
     new_sold_items,
+    new_next_id,
+  };
+};
+
+const NOT_USED_USER_NOTES_PROPERTY = ["_id"];
+export const filterNoteListProps = (entries) => {
+  return [...entries.values()].map((note) =>
+    removeProperties(note, NOT_USED_USER_NOTES_PROPERTY)
+  );
+};
+
+export const getNewNotesData = (client_notes, server_next_id) => {
+  const { allIds, byId } = client_notes.collection;
+  let new_next_id = server_next_id;
+
+  const new_notes = allIds.reduce((acc, key) => {
+    acc[`entries.${new_next_id}`] = {
+      ...byId[key],
+      id: new_next_id++,
+    };
+    return acc;
+  }, {});
+
+  return {
+    new_notes,
     new_next_id,
   };
 };
@@ -193,4 +220,16 @@ export const getSolds = async (user_id) => {
   }
 
   return solds;
+};
+
+export const getNotes = async (user_id) => {
+  let notes = await userNotes.findOne({ user_id });
+  if (!notes) {
+    notes = await userNotes.create({
+      user_id,
+      ...INIT_NOTES_DATA,
+    });
+  }
+
+  return notes;
 };
