@@ -101,3 +101,27 @@ export const editNote = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteNote = async (req, res, next) => {
+  try {
+    const user_id = req.user;
+    const note_id = req.params.note_id;
+
+    if (note_id === undefined || note_id === "")
+      return res.status(400).json({
+        message: "Note Id is required.",
+      });
+
+    const result = await userNotes.findOneAndUpdate(
+      {
+        user_id,
+      },
+      { $unset: { [`entries.${note_id}`]: "" } }
+    );
+    if (!result) return res.status(404).send();
+
+    return res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+};
