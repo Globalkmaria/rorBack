@@ -15,14 +15,25 @@ import {
   replaceUserSolds,
   saveUserSolds,
 } from "../../../middleware/user/solds.js";
+import { getUserNotes } from "../../../middleware/user/notes.js";
 
 const router = express.Router();
 
-router.get("/", getUserStocks, getUserGroups, getUserSolds, (req, res) => {
-  res
-    .status(200)
-    .json({ stocks: req.stocks, groups: req.groups, solds: req.solds });
-});
+router.get(
+  "/",
+  getUserStocks,
+  getUserGroups,
+  getUserSolds,
+  getUserNotes,
+  (req, res) => {
+    res.status(200).json({
+      stocks: req.stocks,
+      groups: req.groups,
+      solds: req.solds,
+      notes: req.notes,
+    });
+  }
+);
 
 router.patch(
   "/",

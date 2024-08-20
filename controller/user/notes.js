@@ -30,18 +30,3 @@ export const addNewNote = async (req, res, next) => {
     next(error);
   }
 };
-
-export const getUserNotes = async (req, res, next) => {
-  try {
-    const user_id = req.user;
-
-    const notes = await getNotes(user_id);
-    const noteList = filterNoteListProps(notes.entries);
-
-    res
-      .status(200)
-      .json({ nextId: notes.next_id, notes: keysToCamelCase(noteList) });
-  } catch (error) {
-    next(error);
-  }
-};
