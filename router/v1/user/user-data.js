@@ -15,7 +15,11 @@ import {
   replaceUserSolds,
   saveUserSolds,
 } from "../../../middleware/user/solds.js";
-import { getUserNotes } from "../../../middleware/user/notes.js";
+import {
+  getUserNotes,
+  replaceUserNotes,
+  saveUserNotes,
+} from "../../../middleware/user/notes.js";
 
 const router = express.Router();
 
@@ -40,6 +44,7 @@ router.patch(
   saveUserStocks,
   saveUserGroups,
   saveUserSolds,
+  saveUserNotes,
   async (req, res) => {
     res.status(200).send({ success: true });
   }
@@ -50,11 +55,14 @@ router.put(
   replaceUserStocks,
   replaceUserGroups,
   replaceUserSolds,
+  replaceUserNotes,
   async (req, res) => {
     try {
       await req.stocks.save();
       await req.groups.save();
       await req.solds.save();
+      await req.notes.save();
+
       return res.status(200).send();
     } catch (err) {
       console.log(err);

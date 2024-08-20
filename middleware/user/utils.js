@@ -84,6 +84,24 @@ export const filterNoteListProps = (entries) => {
   );
 };
 
+export const getNewNotesData = (client_notes, server_next_id) => {
+  const { allIds, byId } = client_notes.collection;
+  let new_next_id = server_next_id;
+
+  const new_notes = allIds.reduce((acc, key) => {
+    acc[`entries.${new_next_id}`] = {
+      ...byId[key],
+      id: new_next_id++,
+    };
+    return acc;
+  }, {});
+
+  return {
+    new_notes,
+    new_next_id,
+  };
+};
+
 export const getPurchasedItemsToDelete = (new_solds) => {
   const items = {};
 
