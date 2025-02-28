@@ -8,13 +8,32 @@ import {
   getStocks,
 } from "./utils.js";
 import { keysToSnakeCase } from "../../utils/keysToSnakeCase.js";
-import { SAMPLE_STOCKS_DATA } from "../../data/stocks.js";
+import { updateStocks } from "./helper.js";
 
 export const getUserStocks = async (req, res, next) => {
   try {
     const user_id = req.user;
     const stocks = await getStocks(user_id);
     req.stocks = keysToCamelCase(filterUserStocksProps(stocks.toJSON()));
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const saveUserStocksData = async (req, res, next) => {
+  try {
+    const newStocks = keysToSnakeCase(req.body);
+    if (!newStocks || !Object.keys(newStocks).length) next();
+
+    const user_id = req.user;
+    const originalStocks = await getStocks(user_id);
+
+    updateStocks(originalStocks, newStocks);
+
+    await originalStocks.validate();
+    await originalStocks.save();
 
     next();
   } catch (err) {
