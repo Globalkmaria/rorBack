@@ -3,6 +3,7 @@ import morgan from "morgan";
 import session from "express-session";
 import passport from "passport";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import { config, corsOption, getSessions } from "./config/index.js";
 import v1 from "./router/v1/index.js";
@@ -12,6 +13,7 @@ import "./config/passport.js";
 
 const app = express();
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors(corsOption));
 app.use(morgan("tiny"));

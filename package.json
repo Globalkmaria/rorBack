@@ -1,19 +1,19 @@
 {
   "name": "rorback",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Show me ror Backend",
   "main": "app.js",
   "type": "module",
   "scripts": {
     "start": "NODE_ENV=prod node app.js",
-    "dev": "NODE_ENV=dev nodemon app.js",
-    "systemd": "npm run systemd"
+    "dev": "NODE_ENV=dev nodemon app.js"
   },
   "keywords": [],
   "author": "Dino.M",
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.705.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -23,10 +23,12 @@
     "mongoose": "^7.4.1",
     "mongoose-findorcreate": "^4.0.0",
     "morgan": "^1.10.0",
+    "openai": "^5.8.2",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^8.0.0"
+    "passport-local-mongoose": "^8.0.0",
+    "request-ip": "^3.3.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

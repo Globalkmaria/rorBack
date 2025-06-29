@@ -39,6 +39,12 @@ export const config = {
     bucketName: required("AWS_BUCKET_NAME"),
     region: required("AWS_REGION"),
   },
+  chatgpt: {
+    apiKey: required("CHATGPT_KEY"),
+    promptId: required("CHATGPT_PROMPT_ID"),
+    version: required("CHATGPT_VERSION"),
+    maxTokens: parseInt(required("CHATGPT_MAX_TOKEN")),
+  },
 };
 
 export const corsOption = {
