@@ -3,6 +3,73 @@ import passport from "passport";
 import mongoose from "mongoose";
 import { safeDeleteUserData } from "../utils/userDataDeletion.js";
 
+/**
+ * Helper function to validate user authentication
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Object|null} - Returns user ID if authenticated, null if response already sent
+ */
+const validateUserAuthentication = (req, res) => {
+  if (!req.user) {
+    res.status(401).json({ message: "User not authenticated" });
+    return null;
+  }
+  return req.user;
+};
+
+/**
+ * Helper function to convert user ID to ObjectId
+ * @param {string|Object} userId - User ID to convert
+ * @returns {Object} - MongoDB ObjectId
+ */
+const getUserObjectId = (userId) => {
+  return typeof userId === "string"
+    ? new mongoose.Types.ObjectId(userId)
+    : userId;
+};
+
+/**
+ * Helper function to delete user authentication record
+ * @param {Object} userObjectId - MongoDB ObjectId
+ * @returns {Promise<Object|null>} - Deleted user object or null if not found
+ */
+const deleteUserRecord = async (userObjectId) => {
+  try {
+    return await User.findByIdAndDelete(userObjectId);
+  } catch (error) {
+    throw new Error(`Failed to delete user record: ${error.message}`);
+  }
+};
+
+/**
+ * Helper function to handle logout after account deletion
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Object} responseData - Response data to send
+ */
+const logoutAndRespond = (req, res, responseData) => {
+  clearCookie(req, res);
+  req.logout(function (err) {
+    if (err) {
+      console.error("Error during logout after account deletion:", err);
+      // Continue anyway since the user is already deleted
+    }
+    res.status(200).json(responseData);
+  });
+};
+
+const cookies = ["connect.sid"];
+// clear cookie
+const clearCookie = (req, res) => {
+  cookies.forEach((cookie) => {
+    res.clearCookie(cookie, {
+      path: "/",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+  });
+};
+
 export const me = async (req, res, next) => {
   try {
     if (req.user) {
@@ -73,39 +140,27 @@ export const googleLogin = (req, res) => {
 
 export const deleteAccount = async (req, res, next) => {
   try {
-    // Check if user is authenticated
-    if (!req.user) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
+    // Validate user authentication
+    const userId = validateUserAuthentication(req, res);
+    if (!userId) return; // Response already sent
 
-    const userId = req.user;
+    // Convert to ObjectId
+    const userObjectId = getUserObjectId(userId);
 
-    // Convert string ID to ObjectId if needed
-    const userObjectId =
-      typeof userId === "string" ? new mongoose.Types.ObjectId(userId) : userId;
-
-    // Find and delete the user authentication record
-    const deletedUser = await User.findByIdAndDelete(userObjectId);
+    // Delete user authentication record
+    const deletedUser = await deleteUserRecord(userObjectId);
 
     if (!deletedUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Logout the user after successful deletion
-    req.logout(function (err) {
-      if (err) {
-        console.error("Error during logout after account deletion:", err);
-        // Continue anyway since the user is already deleted
-      }
+    // Logout and respond
+    const responseData = {
+      message: "User authentication record deleted successfully",
+      deletedUser: req.user.username,
+    };
 
-      return res.status(200).json({
-        message: "User authentication record deleted successfully",
-        deletedUser: {
-          id: deletedUser._id,
-          username: deletedUser.username,
-        },
-      });
-    });
+    logoutAndRespond(req, res, responseData);
   } catch (err) {
     console.error("Error deleting user authentication record:", err);
     next(err);
@@ -114,16 +169,12 @@ export const deleteAccount = async (req, res, next) => {
 
 export const deleteAccountComplete = async (req, res, next) => {
   try {
-    // Check if user is authenticated
-    if (!req.user) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
+    // Validate user authentication
+    const userId = validateUserAuthentication(req, res);
+    if (!userId) return; // Response already sent
 
-    const userId = req.user;
-
-    // Convert string ID to ObjectId if needed
-    const userObjectId =
-      typeof userId === "string" ? new mongoose.Types.ObjectId(userId) : userId;
+    // Convert to ObjectId
+    const userObjectId = getUserObjectId(userId);
 
     // First, delete all user data (stocks, groups, solds, notes)
     const userDataDeletionResult = await safeDeleteUserData(userObjectId);
@@ -136,7 +187,7 @@ export const deleteAccountComplete = async (req, res, next) => {
     }
 
     // Then, delete the user authentication record
-    const deletedUser = await User.findByIdAndDelete(userObjectId);
+    const deletedUser = await deleteUserRecord(userObjectId);
 
     if (!deletedUser) {
       return res
@@ -144,22 +195,13 @@ export const deleteAccountComplete = async (req, res, next) => {
         .json({ message: "User authentication record not found" });
     }
 
-    // Logout the user after successful deletion
-    req.logout(function (err) {
-      if (err) {
-        console.error("Error during logout after account deletion:", err);
-        // Continue anyway since the user is already deleted
-      }
+    // Logout and respond
+    const responseData = {
+      message: "Account completely deleted successfully",
+      deletedUser: req.user.username,
+    };
 
-      return res.status(200).json({
-        message: "Account completely deleted successfully",
-        deletedUser: {
-          id: deletedUser._id,
-          username: deletedUser.username,
-        },
-        userDataDeletion: userDataDeletionResult,
-      });
-    });
+    logoutAndRespond(req, res, responseData);
   } catch (err) {
     console.error("Error deleting account completely:", err);
     next(err);
