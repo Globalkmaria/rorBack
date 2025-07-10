@@ -87,7 +87,7 @@ const clearCookie = (req, res) => {
     res.clearCookie(cookie, {
       path: "/",
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
     });
   });
 };
