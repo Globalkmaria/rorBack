@@ -1,6 +1,7 @@
 import User from "../models/auth/userModel.js";
 import passport from "passport";
 import mongoose from "mongoose";
+import { safeDeleteUserData } from "../utils/userDataDeletion.js";
 
 export const me = async (req, res, next) => {
   try {
@@ -68,4 +69,99 @@ export const logout = (req, res) => {
 
 export const googleLogin = (req, res) => {
   res.sendStatus(200);
+};
+
+export const deleteAccount = async (req, res, next) => {
+  try {
+    // Check if user is authenticated
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const userId = req.user;
+
+    // Convert string ID to ObjectId if needed
+    const userObjectId =
+      typeof userId === "string" ? new mongoose.Types.ObjectId(userId) : userId;
+
+    // Find and delete the user authentication record
+    const deletedUser = await User.findByIdAndDelete(userObjectId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Logout the user after successful deletion
+    req.logout(function (err) {
+      if (err) {
+        console.error("Error during logout after account deletion:", err);
+        // Continue anyway since the user is already deleted
+      }
+
+      return res.status(200).json({
+        message: "User authentication record deleted successfully",
+        deletedUser: {
+          id: deletedUser._id,
+          username: deletedUser.username,
+        },
+      });
+    });
+  } catch (err) {
+    console.error("Error deleting user authentication record:", err);
+    next(err);
+  }
+};
+
+export const deleteAccountComplete = async (req, res, next) => {
+  try {
+    // Check if user is authenticated
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    const userId = req.user;
+
+    // Convert string ID to ObjectId if needed
+    const userObjectId =
+      typeof userId === "string" ? new mongoose.Types.ObjectId(userId) : userId;
+
+    // First, delete all user data (stocks, groups, solds, notes)
+    const userDataDeletionResult = await safeDeleteUserData(userObjectId);
+
+    if (!userDataDeletionResult.success) {
+      return res.status(500).json({
+        message: "Failed to delete user data",
+        error: userDataDeletionResult.error,
+      });
+    }
+
+    // Then, delete the user authentication record
+    const deletedUser = await User.findByIdAndDelete(userObjectId);
+
+    if (!deletedUser) {
+      return res
+        .status(404)
+        .json({ message: "User authentication record not found" });
+    }
+
+    // Logout the user after successful deletion
+    req.logout(function (err) {
+      if (err) {
+        console.error("Error during logout after account deletion:", err);
+        // Continue anyway since the user is already deleted
+      }
+
+      return res.status(200).json({
+        message: "Account completely deleted successfully",
+        deletedUser: {
+          id: deletedUser._id,
+          username: deletedUser.username,
+        },
+        userDataDeletion: userDataDeletionResult,
+      });
+    });
+  } catch (err) {
+    console.error("Error deleting account completely:", err);
+    next(err);
+  }
 };
