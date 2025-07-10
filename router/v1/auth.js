@@ -17,6 +17,18 @@ router.post("/login", authMiddleware.validateCredential, authController.login);
 
 router.get("/logout", authController.logout);
 
+router.delete(
+  "/account",
+  authMiddleware.isLoggedIn,
+  authController.deleteAccount
+);
+
+router.delete(
+  "/account/complete",
+  authMiddleware.isLoggedIn,
+  authController.deleteAccountComplete
+);
+
 router.get("/google", authMiddleware.connectGoogleOAuth);
 
 router.get(

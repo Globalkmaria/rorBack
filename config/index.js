@@ -45,6 +45,12 @@ export const config = {
     version: required("CHATGPT_VERSION"),
     maxTokens: parseInt(required("CHATGPT_MAX_TOKEN")),
   },
+  userProtection: {
+    protectedUserIds: (process.env.PROTECTED_USER_IDS || "")
+      .split(",")
+      .map((id) => id.trim())
+      .filter((id) => id !== ""),
+  },
 };
 
 export const corsOption = {
