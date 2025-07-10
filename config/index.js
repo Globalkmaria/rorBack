@@ -46,7 +46,10 @@ export const config = {
     maxTokens: parseInt(required("CHATGPT_MAX_TOKEN")),
   },
   userProtection: {
-    protectedUserIds: required("PROTECTED_USER_IDS").split(",") || [],
+    protectedUserIds: (process.env.PROTECTED_USER_IDS || "")
+      .split(",")
+      .map((id) => id.trim())
+      .filter((id) => id !== ""),
   },
 };
 
