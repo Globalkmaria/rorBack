@@ -87,7 +87,6 @@ const clearCookie = (req, res) => {
     res.clearCookie(cookie, {
       path: "/",
       httpOnly: true,
-      secure: true,
     });
   });
 };
