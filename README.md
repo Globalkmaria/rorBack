@@ -1,109 +1,137 @@
 # Show me RoR(Rate of Return)
 
-Project Link : <https://showmeror.site/>
+Project Link : <https://showmeror.site>
 
 Test ID : testme@gmail.com
-Test PW : 12345678
+PW : 12345678
 
 ## Table of Contents
 
 - [About](#about)
 - [Features](#features)
 - [Skills and Technologies Used](#skills-and-technologies-used)
-- [Version History](#version-history)
-- [ERD](#erd)
 - [Snapshot](#snapshot)
 
 ## About
 
 This project allows you to:
 
+- **AI-Powered Stock Insights** – Enter any ticker (e.g. `AAPL`) or company name (e.g. “Apple”) and receive an AI-generated snapshot that blends real-time market data with concise commentary.
 - **Track Individual Stock Purchases:** Seamlessly monitor your stock purchases, with easy access to purchase details and average information for each stock.
 - **Group Stocks Effortlessly:** Organize your stock purchases in multiple ways to monitor returns and return ratios for each group.
 - **Access Data Anywhere:** Register and access your data from anywhere, ensuring convenient control of your investments.
+- **Manage and Organize Notes:** Create, filter, and sort notes related to your stocks and sales, keeping all your investment-related thoughts and information in one place.
+
+> ⚠️ **Disclaimer**  
+> The AI insight feature summarizes publicly available information and is not financial advice. Always do your own research before trading.
+
 
 ## Features
 
-1. **Secure Login and Data Access**
+1. **AI Stock Search**
+   - Description: Type a ticker or company name into the *Search* bar and the AI returns:
+     - Key fundamentals (market cap, P/E, dividend, etc.)  
+     - A short, plain-English outlook highlighting recent catalysts, risks, and opportunities
+   - Benefits : Cuts research time; you get a first-pass analysis in seconds without leaving the app.
 
-   - _Description:_ Safely access your account with secure login credentials. Your data is stored in the cloud, allowing you to check it from anywhere.
-   - _Benefits:_ Protect your data while ensuring convenient access from any device.
 
-1. **Data Storage and Registration**
+2. **Secure Login and Data Access**
 
-   - _Description:_ Use the 'Show me RoR' feature to save your data locally before registering. Easily transition to remote storage when you choose to register.
-   - _Benefits:_ Seamless data management and flexibility for users.
+   - Description: Safely access your account with secure login credentials. Your data is stored in the cloud, allowing you to check it from anywhere.
+   - Benefits: Protect your data while ensuring convenient access from any device.
 
-1. **Individual Stock Tracking**
+3. **Data Storage and Registration**
 
-   - _Description:_ Effortlessly monitor the details of your individual stock purchases.
-   - _Benefits:_ Gain insights into your stock portfolio's performance.
+   - Description: Use the 'Show me RoR' feature to save your data locally before registering. Easily transition to remote storage when you choose to register.
+   - Benefits: Seamless data management and flexibility for users.
 
-1. **Stock Grouping and Analysis**
+4. **Individual Stock Tracking**
 
-   - _Description:_ Organize your stocks based on your interests and assess each group's Total Buy Price, Total Current Value, Return, and Return Ratio.
-   - _Benefits:_ Simplify portfolio analysis and decision-making.
+   - Description: Effortlessly monitor the details of your individual stock purchases.
+   - Benefits: Gain insights into your stock portfolio's performance.
 
-1. **Visual Data Representation**
+5. **Stock Grouping and Analysis**
 
-   - _Description:_ Visualize individual stock percentages and insights with easy-to-understand charts.
-   - _Benefits:_ Enhance data comprehension and strategic planning.
+   - Description: Organize your stocks based on your interests and assess each group's Total Buy Price, Total Current Value, Return, and Return Ratio.
+   - Benefits: Simplify portfolio analysis and decision-making.
 
-1. **Data Backup**
+6. **Visual Data Representation**
 
-   - _Description:_ Obtain a backup file of your current data for added security and peace of mind.
-   - _Benefits:_ Safeguard your valuable information.
+   - Description: Visualize individual stock percentages and insights with easy-to-understand charts.
+   - Benefits: Enhance data comprehension and strategic planning.
 
-1. **Market Cap Analysis**
-   - _Description:_ Quickly assess the top-performing stocks by market capitalization.
-   - _Benefits:_ Stay informed about the largest players in the market.
+7. **Data Backup**
 
+   - Description: Obtain a backup file of your current data for added security and peace of mind.
+   - Benefits: Safeguard your valuable information.
+
+8. **Market Cap Analysis**
+   - Description: Quickly assess the top-performing stocks by market capitalization.
+   - Benefits: Stay informed about the largest players in the market.
+9. **Note Management**
+   - Description: Manage notes related to your stocks with advanced filtering, sorting, and automatic inclusion of relevant information.
+   - Benefits: Keep organized records and efficiently manage your investment-related notes.
+10. **Integrated Financial News Feed**
+   - Description: Get the latest financial headlines from trusted sources like The Wall Street Journal (WSJ), The New York Times (NYT), and The Financial Times (FT) directly on the homepage.
+   - Benefits: Stay updated with real-time news without leaving the app, enhancing decision-making based on current events.
+  
 ## Skills and Technologies Used
 
-- **Backend**
-
-  - Skills : Node.js, Express.js, Mongoose
-  - Database: MongoDB, AWS S3
-  - Authentication: [Passport](https://www.passportjs.org/)
-  - Deployment: AWS EC2
-
 - **Frontend**
-  - Git Repository : https://github.com/Globalkmaria/rateOfReturn
   - Skills : React.js, Typescript, Redux, React-Router, Style-components, Chart.js
   - Deployment : Netlify
+  - Test : Jest
+- **Backend**
+  - Github Repository : https://github.com/Globalkmaria/rorBack
+  - Skills : Node.js, Express.js, Mongoose
+  - Database: MongoDB, AWS S3
+  - Authentication: Passport
+  - Deployment: AWS EC2
 
 ## Snapshot
 
 - Home page
+<br/>
+  <img width="700" alt="image" src="https://github.com/user-attachments/assets/f51c42de-8add-441f-b4e5-80e8b8f760b3" />
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/62055834-888e-4258-86ef-763c59e26780" />
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/1ee999cd-c5a0-49c2-9bf6-29832bd95200/image.png" alt="image" width="700" height="400">
+- AI page
+
+  <img width="700" alt="image" src="https://github.com/user-attachments/assets/c98caf0d-94e6-4b6e-a520-dbdeaa8a241b" />
+
 
 - Current page
-
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/185152d2-eccd-44bd-9153-b146ab1ab949/image.png" alt="image" width="700" height="400">
+<br/>
+  <img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/0bc72060-1b76-4981-9290-d28a8852c52b">
+  <img width="700" height="400" src="https://github.com/user-attachments/assets/ccdd4014-0d29-453b-9843-6d894d30862b">
+  <img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/cd5059d2-2655-4445-b677-e28e6f8642b6">
 
 - Add group
-
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/d279bb52-5715-434c-b862-ce53576a5d6b/image.png" alt="image" width="700" height="400">
-
-- Edit current prices
-
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/0ce5af52-941c-41e9-a381-f1bef6abd936/image.png" alt="image" width="700" height="400">
+<br/>
+  <img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/7f07aee1-e1f3-4e51-8771-c2a8ffe9a9f5">
 
 - Chart page
-
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/01e9bb11-e707-41cb-8e28-f079f81eced5/image.png" alt="image" width="700" height="400">
+<br/>
+<img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/797604e3-9437-45cb-8545-e421f7bfcb2f">
+<img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/b988be7f-2256-4d8f-a661-4922e4c4011d">
 
 - Sold page
+<br/>
+<img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/4a1899f2-9472-4057-bc64-43933599cb1d">
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/13b99a57-ddfa-4970-897e-c8faf28368a6/image.png" alt="image" width="700" height="400">
+- Note page
+<br/>
+  <img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/1125f786-0755-4e0f-8fb4-ebf5f1791292">
+  <img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/849fe467-5138-4fae-811a-0a6eade2a63a">
 
 - Login page
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/2f836849-5571-40b4-b1c8-f65c2e9d4966/image.png" alt="image" width="700" height="400">
+<br/>
+
+  <img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/8ee4c711-8d86-40fc-9ec3-73b38eda5f6c">
 
 - Data Sync when there is local data and login
 
-  <img src="https://velog.velcdn.com/images/tjdgus0528/post/6d12a3fc-7a03-4f80-be34-c36459f2cdbc/image.png" alt="image" width="700" height="400">
+<br/>
 
-Licensed under GNU v3.0
+  <img width="700" height="400" alt="image" src="https://github.com/user-attachments/assets/a090f150-98f4-4fce-895a-032aafe42a8c">
