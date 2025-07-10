@@ -2,6 +2,7 @@ import User from "../models/auth/userModel.js";
 import passport from "passport";
 import mongoose from "mongoose";
 import { safeDeleteUserData } from "../utils/userDataDeletion.js";
+import { getProtectedUserIds } from "../config/userProtection.js";
 
 /**
  * Helper function to validate user authentication
@@ -11,10 +12,31 @@ import { safeDeleteUserData } from "../utils/userDataDeletion.js";
  */
 const validateUserAuthentication = (req, res) => {
   if (!req.user) {
-    res.status(401).json({ message: "User not authenticated" });
-    return null;
+    return {
+      success: false,
+      error: "User not authenticated",
+      statusCode: 401,
+    };
   }
-  return req.user;
+  return {
+    success: true,
+  };
+};
+
+const validateUserProtection = (userId) => {
+  const stringUserId = userId.toString();
+  const protectedUserIds = getProtectedUserIds();
+
+  if (protectedUserIds.includes(stringUserId)) {
+    return {
+      success: false,
+      error: "User is protected",
+      statusCode: 403,
+    };
+  }
+  return {
+    success: true,
+  };
 };
 
 /**
@@ -69,6 +91,8 @@ const clearCookie = (req, res) => {
     });
   });
 };
+
+///---
 
 export const me = async (req, res, next) => {
   try {
@@ -141,11 +165,22 @@ export const googleLogin = (req, res) => {
 export const deleteAccount = async (req, res, next) => {
   try {
     // Validate user authentication
-    const userId = validateUserAuthentication(req, res);
-    if (!userId) return; // Response already sent
+    const validateUserResult = validateUserAuthentication(req, res);
+    if (!validateUserResult.success)
+      return res
+        .status(validateUserResult.statusCode)
+        .json({ message: validateUserResult.error });
 
     // Convert to ObjectId
-    const userObjectId = getUserObjectId(userId);
+    const userObjectId = getUserObjectId(req.user);
+
+    // Validate user protection
+    const validateUserProtectionResult = validateUserProtection(userObjectId);
+    if (!validateUserProtectionResult.success) {
+      return res
+        .status(validateUserProtectionResult.statusCode)
+        .json({ message: validateUserProtectionResult.error });
+    }
 
     // Delete user authentication record
     const deletedUser = await deleteUserRecord(userObjectId);
@@ -157,7 +192,6 @@ export const deleteAccount = async (req, res, next) => {
     // Logout and respond
     const responseData = {
       message: "User authentication record deleted successfully",
-      deletedUser: req.user.username,
     };
 
     logoutAndRespond(req, res, responseData);
@@ -170,11 +204,22 @@ export const deleteAccount = async (req, res, next) => {
 export const deleteAccountComplete = async (req, res, next) => {
   try {
     // Validate user authentication
-    const userId = validateUserAuthentication(req, res);
-    if (!userId) return; // Response already sent
+    const validateUserResult = validateUserAuthentication(req, res);
+    if (!validateUserResult.success)
+      return res
+        .status(validateUserResult.statusCode)
+        .json({ message: validateUserResult.error });
 
     // Convert to ObjectId
-    const userObjectId = getUserObjectId(userId);
+    const userObjectId = getUserObjectId(req.user);
+
+    // Validate user protection
+    const validateUserProtectionResult = validateUserProtection(userObjectId);
+    if (!validateUserProtectionResult.success) {
+      return res
+        .status(validateUserProtectionResult.statusCode)
+        .json({ message: validateUserProtectionResult.error });
+    }
 
     // First, delete all user data (stocks, groups, solds, notes)
     const userDataDeletionResult = await safeDeleteUserData(userObjectId);
@@ -198,7 +243,6 @@ export const deleteAccountComplete = async (req, res, next) => {
     // Logout and respond
     const responseData = {
       message: "Account completely deleted successfully",
-      deletedUser: req.user.username,
     };
 
     logoutAndRespond(req, res, responseData);
