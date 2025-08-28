@@ -12,6 +12,7 @@ export const SAMPLE_STOCKS_DATA = {
         name: "Google",
         current_price: 3400,
         tag: "stock",
+        symbol: "GOOGL",
       },
       items: {
         2: {
@@ -36,6 +37,7 @@ export const SAMPLE_STOCKS_DATA = {
         name: "Apple",
         current_price: 2000,
         tag: "stock",
+        symbol: "AAPL",
       },
       items: {
         3: {
@@ -59,6 +61,7 @@ export const SAMPLE_STOCKS_DATA = {
         id: "3",
         name: "Tesla",
         current_price: 100,
+        symbol: "TSLA",
       },
       items: {
         6: {
@@ -82,6 +85,7 @@ export const SAMPLE_STOCKS_DATA = {
         id: "4",
         name: "MS",
         current_price: 4000,
+        symbol: "MSFT",
       },
       items: {
         10: {
@@ -106,6 +110,7 @@ export const SAMPLE_STOCKS_DATA = {
         name: "TLT",
         current_price: 4000,
         tag: "bond",
+        symbol: "TLT",
       },
       items: {
         16: {
