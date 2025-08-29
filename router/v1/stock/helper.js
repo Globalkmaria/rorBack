@@ -21,24 +21,34 @@ export const fetchQuotes = async (symbols, searchDate, cachedQuotes) => {
     newSymbols.push(symbol);
   }
 
-  const quotes = await yahooFinance.quote(newSymbols, {
-    fields: [
-      "regularMarketPreviousClose",
-      "regularMarketTime",
-      "displayName",
-      "symbol",
-      "longName",
-    ],
-  });
-
-  for (const quote of quotes) {
-    cachedQuotes.set(quote.symbol, {
-      ...quote,
-      regularMarketTime: formatDate(quote.regularMarketTime),
+  try {
+    const quotes = await yahooFinance.quote(newSymbols, {
+      fields: [
+        "regularMarketPreviousClose",
+        "regularMarketTime",
+        "displayName",
+        "symbol",
+        "longName",
+      ],
     });
+
+    for (const quote of quotes) {
+      cachedQuotes.set(quote.symbol, {
+        ...quote,
+        regularMarketTime: formatDate(quote.regularMarketTime),
+      });
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Something went wrong while fetching stock quotes",
+    };
   }
 
-  return cleanSymbols;
+  return {
+    success: true,
+    symbols: cleanSymbols,
+  };
 };
 
 export const getResponseData = (symbols, cachedQuotes) => {

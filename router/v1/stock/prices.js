@@ -42,10 +42,20 @@ router.post("/", async (req, res, next) => {
 
     const searchDate = getSearchDate();
 
-    const fetchedSymbols = await fetchQuotes(symbols, searchDate, cachedQuotes);
+    const fetchedQuotesResult = await fetchQuotes(
+      symbols,
+      searchDate,
+      cachedQuotes
+    );
+
+    if (!fetchedQuotesResult.success) {
+      return res.status(400).json({
+        message: fetchedQuotesResult.message,
+      });
+    }
 
     const { quotes, successSymbols, failedSymbols } = getResponseData(
-      fetchedSymbols,
+      fetchedQuotesResult.symbols,
       cachedQuotes
     );
 
@@ -60,10 +70,10 @@ router.post("/", async (req, res, next) => {
 
     res.json(response);
   } catch (error) {
-    console.error("Error fetching stock quotes:", error);
+    console.error("Error getting stock quotes:", error);
 
     return res.status(400).json({
-      message: "Something went wrong while fetching stock quotes",
+      message: "Something went wrong while getting stock quotes",
     });
   }
 });
