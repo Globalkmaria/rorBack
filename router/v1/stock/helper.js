@@ -21,6 +21,13 @@ export const fetchQuotes = async (symbols, searchDate, cachedQuotes) => {
     newSymbols.push(symbol);
   }
 
+  if (newSymbols.length === 0) {
+    return {
+      success: true,
+      symbols: cleanSymbols,
+    };
+  }
+
   try {
     const quotes = await yahooFinance.quote(newSymbols, {
       fields: [
