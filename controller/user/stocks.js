@@ -6,24 +6,31 @@ export const editUserStock = async (req, res, next) => {
   try {
     const user_id = req.user;
     const stock_id = req.params.stockId;
-    const { name, current_price, tag } = keysToSnakeCase(req.body);
+    const { name, symbol, current_price, tag } = keysToSnakeCase(req.body);
 
     if (
       !stock_id ||
-      (name === undefined && current_price === undefined && tag === undefined)
+      (name === undefined &&
+        symbol === undefined &&
+        current_price === undefined &&
+        tag === undefined)
     ) {
       return res.status(400).send();
     }
 
+    const $set = {};
+    if (name !== undefined)
+      $set[`stocks.${stock_id}.info.name`] = name;
+    if (symbol !== undefined)
+      $set[`stocks.${stock_id}.info.symbol`] = symbol;
+    if (current_price !== undefined)
+      $set[`stocks.${stock_id}.info.current_price`] = current_price;
+    if (tag !== undefined)
+      $set[`stocks.${stock_id}.info.tag`] = tag;
+
     const stock = await userStocks.findOneAndUpdate(
       { user_id, [`stocks.${stock_id}`]: { $exists: true } },
-      {
-        $set: {
-          [`stocks.${stock_id}.info.name`]: name,
-          [`stocks.${stock_id}.info.current_price`]: current_price,
-          [`stocks.${stock_id}.info.tag`]: tag,
-        },
-      },
+      { $set },
       { new: true }
     );
 

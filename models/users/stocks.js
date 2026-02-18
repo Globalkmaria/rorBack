@@ -39,6 +39,9 @@ const StockSchema = new Schema(
         type: String,
         required: true,
       },
+      symbol: {
+        type: String,
+      },
       name: {
         type: String,
       },

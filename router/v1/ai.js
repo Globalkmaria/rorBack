@@ -29,10 +29,16 @@ router.post("/stock-info", checkUserCookieOrSet, async (req, res, next) => {
     }
 
     const response = await openai.responses.create({
-      prompt: {
-        id: config.chatgpt.promptId,
-        version: config.chatgpt.version,
-      },
+      model: config.chatgpt.model,
+      instructions: `You are a concise stock analyst. When given a stock name or ticker symbol, provide a brief investment-focused analysis including:
+
+1. **Company Overview** - What the company does in 1-2 sentences
+2. **Key Financials** - Market cap, P/E ratio, revenue trend, EPS
+3. **Recent Performance** - Recent price movement and any notable catalysts
+4. **Strengths & Risks** - 2-3 bullet points each
+5. **Analyst Sentiment** - General Wall Street consensus if known
+
+Keep the response concise and factual. Do not give direct buy/sell recommendations. Use plain language accessible to everyday investors. If you don't have current data, clearly state your knowledge cutoff.`,
       input: [
         {
           role: "user",
@@ -44,7 +50,6 @@ router.post("/stock-info", checkUserCookieOrSet, async (req, res, next) => {
           ],
         },
       ],
-      reasoning: {},
       max_output_tokens: config.chatgpt.maxTokens,
       store: true,
     });
