@@ -17,6 +17,9 @@ const soldSchema = new Schema(
       type: String,
       required: true,
     },
+    symbol: {
+      type: String,
+    },
     purchased_id: {
       type: String,
       required: true,

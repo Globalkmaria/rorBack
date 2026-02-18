@@ -167,6 +167,7 @@ export const getNewSold = (soldInfo, date = new Date(), time = "00:00", id) => {
   return {
     id,
     stock_name: soldInfo.stock_name,
+    symbol: soldInfo.symbol,
     stock_id: soldInfo.stock_id,
     purchased_id: soldInfo.purchased_id,
     purchased_quantity: soldInfo.purchased_quantity,
