@@ -41,8 +41,7 @@ export const config = {
   },
   chatgpt: {
     apiKey: required("CHATGPT_KEY"),
-    promptId: required("CHATGPT_PROMPT_ID"),
-    version: required("CHATGPT_VERSION"),
+    model: required("CHATGPT_MODEL", "gpt-4o-mini"),
     maxTokens: parseInt(required("CHATGPT_MAX_TOKEN")),
   },
   userProtection: {
