@@ -1,10 +1,5 @@
 # Show me RoR(Rate of Return)
 
-Project Link : <https://showmeror.site>
-
-Test ID : testme@gmail.com
-PW : 12345678
-
 ## Table of Contents
 
 - [About](#about)
